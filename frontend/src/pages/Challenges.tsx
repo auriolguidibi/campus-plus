@@ -11,7 +11,7 @@ export function Challenges() {
   useEffect(() => { setItems(null); api<Challenge[]>(`/challenges/?status=${tab}`).then(setItems).catch(() => setItems([])) }, [tab])
   return (
     <div className="space-y-4 pt-6">
-      <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">Défis & Battles</h1><Link to="/classement" className="text-sm font-semibold text-primary">Classement</Link></div>
+      <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">Défis & Battles</h1><Link to="/classement" className="text-sm font-semibold text-link">Classement</Link></div>
       <div className="grid grid-cols-3 gap-1 rounded-xl bg-soft p-1" role="tablist">
         {([['open', 'En cours'], ['mine', 'Mes participations'], ['closed', 'Terminés']] as const).map(([v, l]) => (
           <button key={v} role="tab" aria-selected={tab === v} onClick={() => setTab(v)} className={`rounded-lg py-2 text-xs font-semibold ${tab === v ? 'bg-primary text-primary-fg' : 'text-muted'}`}>{l}</button>
@@ -69,7 +69,7 @@ export function ChallengePage() {
 
   return (
     <div className="space-y-4 pt-6">
-      <Link to="/defis" className="text-sm text-primary">← Défis</Link>
+      <Link to="/defis" className="text-sm text-link">← Défis</Link>
       <header>
         <p className="text-xs text-muted">{c.kind_label} · {c.max_points} points maximum</p>
         <h1 className="text-xl font-bold">{c.title}</h1>
@@ -114,7 +114,7 @@ export function ChallengePage() {
               <p className="font-semibold">@{s.user.username} {s.points !== null && <span className="text-accent">· {s.points} pts</span>}</p>
               {s.answer && <p className="whitespace-pre-wrap">{s.answer}</p>}
               {s.image && <img src={s.image} alt="" className="max-h-48 rounded-lg" />}
-              {!c.auto_graded && <button className="text-primary" onClick={() => review(s.id)}>{s.points === null ? 'Noter' : 'Modifier la note'}</button>}
+              {!c.auto_graded && <button className="text-link" onClick={() => review(s.id)}>{s.points === null ? 'Noter' : 'Modifier la note'}</button>}
             </div>
           ))}
           <ErrorBox>{err}</ErrorBox>

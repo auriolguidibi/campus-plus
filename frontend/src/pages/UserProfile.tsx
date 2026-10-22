@@ -40,7 +40,7 @@ export default function UserProfile() {
 
   return (
     <div className="space-y-5 pt-6">
-      <button onClick={() => nav(-1)} className="text-sm text-primary">← Retour</button>
+      <button onClick={() => nav(-1)} className="text-sm text-link">← Retour</button>
       <section className="flex items-center gap-4">
         <Avatar user={p} size={72} />
         <div>
@@ -66,7 +66,7 @@ export default function UserProfile() {
       </div>
       <h2 className="font-semibold">Publications</h2>
       <PostList query={`author=${encodeURIComponent(p.username)}`} empty="Aucune publication." />
-      <Link to="/amis" className="block text-center text-sm text-primary">Voir mes amis</Link>
+      <Link to="/amis" className="block text-center text-sm text-link">Voir mes amis</Link>
     </div>
   )
 }

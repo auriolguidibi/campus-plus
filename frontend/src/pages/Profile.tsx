@@ -44,7 +44,7 @@ export default function Profile() {
       </section>
 
       <Link to="/amis" className="card block p-4 font-semibold">Mes amis & demandes →</Link>
-      {user.staff_role !== 'user' && <Link to="/admin" className="card block bg-primary/10 p-4 font-semibold text-primary">Espace {user.staff_role === 'admin' ? 'administrateur' : 'modérateur'} →</Link>}
+      {user.staff_role !== 'user' && <Link to="/admin" className="card block bg-primary/10 p-4 font-semibold text-link">Espace {user.staff_role === 'admin' ? 'administrateur' : 'modérateur'} →</Link>}
 
       <section className="space-y-3">
         <h2 className="font-semibold">Mes publications</h2>
@@ -56,7 +56,7 @@ export default function Profile() {
         <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="Thème">
           {MODES.map(([m, label]) => (
             <button key={m} role="radio" aria-checked={mode === m} onClick={() => saveTheme(m)}
-              className={`rounded-xl border-2 py-3 text-sm font-semibold ${mode === m ? 'border-primary bg-primary/10 text-primary' : 'border-line text-muted'}`}>{label}</button>
+              className={`rounded-xl border-2 py-3 text-sm font-semibold ${mode === m ? 'border-primary bg-primary/10 text-link' : 'border-line text-muted'}`}>{label}</button>
           ))}
         </div>
       </section>
@@ -67,7 +67,7 @@ export default function Profile() {
         {blocked.map((b) => (
           <div key={b.id} className="flex items-center justify-between text-sm">
             @{b.username}
-            <button className="text-primary" onClick={async () => { await api(`/blocks/${b.id}/`, { method: 'DELETE' }); setBlocked(blocked.filter((x) => x.id !== b.id)) }}>Débloquer</button>
+            <button className="text-link" onClick={async () => { await api(`/blocks/${b.id}/`, { method: 'DELETE' }); setBlocked(blocked.filter((x) => x.id !== b.id)) }}>Débloquer</button>
           </div>
         ))}
       </section>

@@ -10,7 +10,7 @@ cd backend && python -m venv .venv && .venv/Scripts/pip install -r requirements.
 cd frontend && npm install && npm run dev   # http://localhost:5190 (proxy /api -> :8000)
 ```
 
-Tests backend : `python manage.py test`. Code d'invitation de dev : `CAMPUS2026` (variable `CAMPUS_INVITE_CODES`).
+Tests backend : `python manage.py test` (43 tests, dont `config/test_journey.py`, un parcours complet de bout en bout). Déploiement : voir `DEPLOYMENT.md` et `backend/.env.example`. Code d'invitation de dev : `CAMPUS2026` (variable `CAMPUS_INVITE_CODES`).
 
 ## État (Phase 1-3 partielles)
 
@@ -53,3 +53,11 @@ notification push. Les rappels d'événements sont générés à l'ouverture des
 
 Pas encore fait : notifications push, invitations/annonces de groupe (fonctionnalité inexistante), préférences de confidentialité détaillées, stories vidéo, défis collectifs, notifications push des rappels, signalement d'annonces, groupes de discussion, pièces jointes en messagerie, paiement mobile, vidéos, sondages, stories, photo de profil/couverture, annonces de groupe, Marketplace, messagerie temps réel, défis, confessions,
 événements, classements, notifications, administration (hors Django admin), push. Les onglets Communautés/Messages affichent « Pas encore disponible ».
+
+## Phase 7 (tests et déploiement)
+
+- Thèmes clair/sombre et formats mobiles audités dans le navigateur sur 17 écrans : aucun débordement horizontal à 375 px, mise en
+  page centrée à 768 px, contrastes de texte conformes WCAG AA (4,5:1) après correction des jetons de couleur (`text-link`
+  séparé de `bg-primary`, accent et danger assombris en mode clair, badges lisibles en mode sombre).
+- Production simulée (waitress, `DJANGO_DEBUG=0`) : application React + API servies par un seul processus, routes profondes,
+  médias, en-têtes de sécurité. MySQL, gunicorn/nginx/HTTPS et SMTP n'ont pas pu être testés (voir `DEPLOYMENT.md`).

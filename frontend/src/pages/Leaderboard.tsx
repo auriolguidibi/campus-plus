@@ -18,7 +18,7 @@ export default function Leaderboard() {
 
   return (
     <div className="space-y-5 pt-6">
-      <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">Classement</h1><Link to="/defis" className="text-sm font-semibold text-primary">Défis</Link></div>
+      <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">Classement</h1><Link to="/defis" className="text-sm font-semibold text-link">Défis</Link></div>
       <div className="grid grid-cols-3 gap-1 rounded-xl bg-soft p-1" role="tablist">
         {([['week', 'Semaine'], ['all', 'Général'], ['promotion', 'Promotions']] as const).map(([v, l]) => (
           <button key={v} role="tab" aria-selected={period === v} onClick={() => setPeriod(v)} className={`rounded-lg py-2 text-xs font-semibold ${period === v ? 'bg-primary text-primary-fg' : 'text-muted'}`}>{l}</button>
@@ -34,7 +34,7 @@ export default function Leaderboard() {
                   <span className="w-6 text-center font-bold text-muted">{e.rank <= 3 ? ['🥇', '🥈', '🥉'][e.rank - 1] : e.rank}</span>
                   {e.user && <Avatar user={e.user} size={34} />}
                   <span className="flex-1 truncate text-sm font-semibold">{e.user ? `${e.user.first_name} ${e.user.last_name}` : e.label}</span>
-                  <span className="text-sm font-bold text-primary">{e.points} pts</span>
+                  <span className="text-sm font-bold text-link">{e.points} pts</span>
                 </div>
               ))}
             </div>

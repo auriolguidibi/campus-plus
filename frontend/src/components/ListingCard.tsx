@@ -27,7 +27,7 @@ export default function ListingCard({ l, badge }: { l: Listing; badge?: boolean 
       </div>
       <div className="p-3">
         <p className="truncate text-sm font-semibold">{l.title}</p>
-        <p className="font-bold text-primary">{fcfa(l.price)}</p>
+        <p className="font-bold text-link">{fcfa(l.price)}</p>
         <p className="truncate text-xs text-muted">{l.condition === 'new' ? 'Neuf' : 'Occasion'}{l.location && ` · ${l.location}`}</p>
       </div>
     </Link>

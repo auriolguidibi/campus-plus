@@ -12,10 +12,10 @@ const tabs = [
 function Tab({ t, badge = 0 }: { t: (typeof tabs)[number]; badge?: number }) {
   return (
     <NavLink to={t.to} end={t.to === '/'} className={({ isActive }) =>
-      `flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-medium ${isActive ? 'text-primary' : 'text-muted'}`}>
+      `flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-medium ${isActive ? 'text-link' : 'text-muted'}`}>
       <span className="relative">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d={t.icon} /></svg>
-        {badge > 0 && <span className="absolute -right-2 -top-1 rounded-full bg-danger px-1 text-[10px] font-bold text-primary-fg">{badge}</span>}
+        {badge > 0 && <span className="absolute -right-2 -top-1 rounded-full bg-danger px-1 text-[10px] font-bold text-bg">{badge}</span>}
       </span>
       {t.label}
     </NavLink>

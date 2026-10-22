@@ -12,7 +12,7 @@ export default function Bell() {
   }, [])
   return (
     <Link to="/notifications" aria-label={n ? `Notifications, ${n} non lues` : 'Notifications'} className="relative px-2 text-xl">
-      🔔{n > 0 && <span className="absolute -right-0.5 -top-1 rounded-full bg-danger px-1.5 text-[10px] font-bold text-primary-fg">{n > 99 ? '99+' : n}</span>}
+      🔔{n > 0 && <span className="absolute -right-0.5 -top-1 rounded-full bg-danger px-1.5 text-[10px] font-bold text-bg">{n > 99 ? '99+' : n}</span>}
     </Link>
   )
 }

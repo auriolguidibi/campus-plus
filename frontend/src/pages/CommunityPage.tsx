@@ -44,7 +44,7 @@ export default function CommunityPage() {
 
   return (
     <div className="space-y-4 pt-6">
-      <Link to="/communautes" className="text-sm text-primary">← Communautés</Link>
+      <Link to="/communautes" className="text-sm text-link">← Communautés</Link>
       <header>
         <h1 className="text-2xl font-bold">{c.name}</h1>
         <p className="text-sm text-muted">{CATEGORIES[c.category]} · {c.member_count} membre{c.member_count > 1 ? 's' : ''}</p>

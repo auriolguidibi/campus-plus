@@ -26,7 +26,7 @@ export default function ReportButton({ type, id, label = 'Signaler' }: { type: '
       </select>
       <input className="field !py-2" placeholder="Précisions (facultatif)" maxLength={500} value={details} onChange={(e) => setDetails(e.target.value)} />
       <div className="flex gap-2">
-        <button className="rounded-lg bg-danger px-3 py-1.5 text-xs font-semibold text-primary-fg" onClick={send}>Envoyer le signalement</button>
+        <button className="rounded-lg bg-danger px-3 py-1.5 text-xs font-semibold text-bg" onClick={send}>Envoyer le signalement</button>
         <button className="rounded-lg border border-line px-3 py-1.5 text-xs" onClick={() => setOpen(false)}>Annuler</button>
       </div>
     </div>

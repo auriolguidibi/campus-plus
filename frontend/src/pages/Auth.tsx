@@ -50,8 +50,8 @@ export function Login() {
         <ErrorBox>{err}</ErrorBox>
         <button className="btn" disabled={busy}>{busy ? 'Connexion…' : 'Se connecter'}</button>
       </form>
-      <Link to="/mot-de-passe-oublie" className="mt-4 text-center text-sm text-primary">Mot de passe oublié ?</Link>
-      <p className="mt-4 text-center text-sm text-muted">Pas encore de compte ? <Link to="/inscription" className="font-semibold text-primary">S'inscrire</Link></p>
+      <Link to="/mot-de-passe-oublie" className="mt-4 text-center text-sm text-link">Mot de passe oublié ?</Link>
+      <p className="mt-4 text-center text-sm text-muted">Pas encore de compte ? <Link to="/inscription" className="font-semibold text-link">S'inscrire</Link></p>
     </Screen>
   )
 }
@@ -90,7 +90,7 @@ export function Register() {
         <ErrorBox>{err}</ErrorBox>
         <button className="btn" disabled={busy}>{busy ? 'Création…' : 'Créer mon compte'}</button>
       </form>
-      <p className="mt-4 text-center text-sm text-muted">Déjà inscrit ? <Link to="/connexion" className="font-semibold text-primary">Se connecter</Link></p>
+      <p className="mt-4 text-center text-sm text-muted">Déjà inscrit ? <Link to="/connexion" className="font-semibold text-link">Se connecter</Link></p>
     </Screen>
   )
 }
@@ -128,7 +128,7 @@ export function Forgot() {
           <button className="btn">{step === 'email' ? 'Envoyer le code' : 'Changer le mot de passe'}</button>
         </form>
       )}
-      <Link to="/connexion" className="mt-4 text-center text-sm text-primary">Retour à la connexion</Link>
+      <Link to="/connexion" className="mt-4 text-center text-sm text-link">Retour à la connexion</Link>
     </Screen>
   )
 }

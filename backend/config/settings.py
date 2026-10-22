@@ -4,11 +4,26 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+def _load_dotenv(path):
+    """Minimal .env loader (KEY=VALUE lines). Real environment variables always win."""
+    if not path.exists():
+        return
+    for line in path.read_text(encoding='utf-8').splitlines():
+        line = line.strip()
+        if line and not line.startswith('#') and '=' in line:
+            k, v = line.split('=', 1)
+            os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+
+
+_load_dotenv(BASE_DIR / '.env')
+
 DEBUG = os.environ.get('DJANGO_DEBUG', '1') == '1'
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-only-insecure-key' if DEBUG else '')
 if not SECRET_KEY:
     raise RuntimeError('DJANGO_SECRET_KEY must be set when DJANGO_DEBUG=0')
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = [h.strip() for h in os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',') if h.strip()]
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if o.strip()]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -32,6 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -63,7 +79,7 @@ if os.environ.get('DB_ENGINE') == 'mysql':
         'OPTIONS': {'charset': 'utf8mb4'},
     }}
 else:
-    DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': BASE_DIR / 'db.sqlite3'}}
+    DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': os.environ.get('SQLITE_PATH', BASE_DIR / 'db.sqlite3')}}
 
 AUTH_USER_MODEL = 'accounts.User'
 AUTH_PASSWORD_VALIDATORS = [
@@ -77,11 +93,31 @@ TIME_ZONE = 'Africa/Porto-Novo'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+# Built React app (frontend/dist). When present, WhiteNoise serves it at the site root and Django falls back to
+# index.html for client-side routes, so one process serves API + app.
+FRONTEND_DIST = Path(os.environ.get('FRONTEND_DIST', BASE_DIR.parent / 'frontend' / 'dist'))
+if (FRONTEND_DIST / 'index.html').exists():
+    WHITENOISE_ROOT = FRONTEND_DIST
+# Uploaded media: serve from Django only when no reverse proxy does it (SERVE_MEDIA=1, small deployments).
+SERVE_MEDIA = DEBUG or os.environ.get('SERVE_MEDIA', '0') == '1'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'localhost')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', '1') == '1'
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'Campus+ <no-reply@campus-plus.local>')
+
+LOGGING = {
+    'version': 1, 'disable_existing_loggers': False,
+    'handlers': {'console': {'class': 'logging.StreamHandler'}},
+    'root': {'handlers': ['console'], 'level': os.environ.get('LOG_LEVEL', 'INFO')},
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication'],
@@ -118,3 +154,11 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE = True
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+# Tests only: a fast hasher keeps the suite quick. Never active outside `manage.py test`.
+import sys  # noqa: E402
+if 'test' in sys.argv:
+    PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
+    # ...and a fast suite shares one throttle cache across tests, so limits are lifted here; config/test_security.py
+    # re-enables a low limit explicitly to prove throttling works.
+    REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {k: '100000/min' for k in REST_FRAMEWORK['DEFAULT_THROTTLE_RATES']}

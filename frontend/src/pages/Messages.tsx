@@ -79,10 +79,10 @@ export function Thread() {
   return (
     <div className="flex min-h-[calc(100dvh-7rem)] flex-col pt-4">
       <header className="mb-3 flex items-center gap-3 border-b border-line pb-3">
-        <Link to="/messages" aria-label="Retour" className="text-primary">←</Link>
+        <Link to="/messages" aria-label="Retour" className="text-link">←</Link>
         {conv && <><Avatar user={conv.other} size={36} />
           <div className="min-w-0 flex-1"><Link to={`/u/${conv.other.username}`} className="block truncate font-semibold">{conv.other.first_name} {conv.other.last_name}</Link>
-            {conv.listing && <Link to={`/marketplace/${conv.listing.id}`} className="block truncate text-xs text-primary">🛍️ {conv.listing.title}</Link>}</div></>}
+            {conv.listing && <Link to={`/marketplace/${conv.listing.id}`} className="block truncate text-xs text-link">🛍️ {conv.listing.title}</Link>}</div></>}
       </header>
       <div className="flex-1 space-y-2">
         {msgs.map((m) => m.is_system ? (

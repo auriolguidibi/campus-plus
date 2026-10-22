@@ -1,4 +1,6 @@
 Django>=6.1,<6.2
 djangorestframework>=3.18
 Pillow>=13.0
-# mysqlclient>=2.2   # only when DB_ENGINE=mysql
+whitenoise>=6.7
+gunicorn>=22        # Linux/macOS production server (on Windows use `waitress`)
+# mysqlclient>=2.2  # only when DB_ENGINE=mysql

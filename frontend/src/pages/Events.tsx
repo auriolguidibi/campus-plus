@@ -17,7 +17,7 @@ export function Events() {
   }, [tab])
   return (
     <div className="space-y-4 pt-6">
-      <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">Événements</h1><Link to="/evenements/nouveau" className="text-sm font-semibold text-primary">+ Organiser</Link></div>
+      <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">Événements</h1><Link to="/evenements/nouveau" className="text-sm font-semibold text-link">+ Organiser</Link></div>
       <div className="grid grid-cols-3 gap-1 rounded-xl bg-soft p-1" role="tablist">
         {([['upcoming', 'À venir'], ['reminders', 'Mes rappels'], ['past', 'Archives']] as const).map(([v, l]) => (
           <button key={v} role="tab" aria-selected={tab === v} onClick={() => setTab(v)} className={`rounded-lg py-2 text-xs font-semibold ${tab === v ? 'bg-primary text-primary-fg' : 'text-muted'}`}>{l}</button>
@@ -28,7 +28,7 @@ export function Events() {
           {items.map((e) => (
             <Link key={e.id} to={`/evenements/${e.id}`} className="card block overflow-hidden">
               {e.image && <img src={e.image} alt="" loading="lazy" className="h-32 w-full object-cover" />}
-              <div className="p-4"><p className="text-xs text-primary">{CATS[e.category]}</p><p className="font-semibold">{e.title}</p>
+              <div className="p-4"><p className="text-xs text-link">{CATS[e.category]}</p><p className="font-semibold">{e.title}</p>
                 <p className="text-xs text-muted">{when(e.starts_at)} · {e.location}</p>
                 <p className="mt-1 text-xs text-muted">{e.going_count} participant{e.going_count > 1 ? 's' : ''}{e.going && ' · tu y vas'}</p></div>
             </Link>
@@ -58,9 +58,9 @@ export function EventPage() {
 
   return (
     <div className="space-y-4 pt-6">
-      <Link to="/evenements" className="text-sm text-primary">← Événements</Link>
+      <Link to="/evenements" className="text-sm text-link">← Événements</Link>
       {e.image && <img src={e.image} alt="" className="max-h-64 w-full rounded-xl2 object-cover" />}
-      <header><p className="text-xs text-primary">{CATS[e.category]}{e.is_past && ' · Terminé (archivé)'}</p><h1 className="text-xl font-bold">{e.title}</h1>
+      <header><p className="text-xs text-link">{CATS[e.category]}{e.is_past && ' · Terminé (archivé)'}</p><h1 className="text-xl font-bold">{e.title}</h1>
         <p className="text-sm text-muted">📅 {when(e.starts_at)}<br />📍 {e.location}<br />Organisé par @{e.organizer.username} · {e.going_count} participant{e.going_count > 1 ? 's' : ''}</p></header>
       <p className="whitespace-pre-wrap text-sm">{e.description}</p>
       {e.rules && <p className="card p-3 text-sm"><b>Règles de participation</b><br />{e.rules}</p>}

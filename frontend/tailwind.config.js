@@ -7,7 +7,7 @@ export default {
     extend: {
       colors: {
         bg: c('bg'), card: c('card'), soft: c('soft'), fg: c('fg'), muted: c('muted'),
-        line: c('line'), primary: c('primary'), 'primary-fg': c('primary-fg'), accent: c('accent'), danger: c('danger'),
+        line: c('line'), primary: c('primary'), link: c('link'), 'primary-fg': c('primary-fg'), accent: c('accent'), danger: c('danger'),
       },
       borderRadius: { xl2: '1.25rem' },
     },

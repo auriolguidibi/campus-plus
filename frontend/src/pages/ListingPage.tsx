@@ -53,7 +53,7 @@ export default function ListingPage() {
 
   return (
     <div className="space-y-4 pt-6">
-      <Link to="/marketplace" className="text-sm text-primary">← Marketplace</Link>
+      <Link to="/marketplace" className="text-sm text-link">← Marketplace</Link>
       <div>
         <div className="aspect-square overflow-hidden rounded-xl2 bg-soft">
           {l.images[pic] ? <img src={l.images[pic].url} alt={l.title} className="h-full w-full object-cover" /> : <div className="grid h-full place-items-center text-5xl">🛍️</div>}
@@ -71,12 +71,12 @@ export default function ListingPage() {
 
       <header>
         <h1 className="text-xl font-bold">{l.title}</h1>
-        <p className="text-2xl font-extrabold text-primary">{fcfa(l.price)}</p>
+        <p className="text-2xl font-extrabold text-link">{fcfa(l.price)}</p>
         <p className="mt-1 flex flex-wrap gap-2 text-xs">
           <span className="rounded-full bg-soft px-2 py-0.5">{l.condition === 'new' ? 'Neuf' : 'Occasion'}</span>
           <span className="rounded-full bg-soft px-2 py-0.5">{l.category.name}</span>
           <span className={`rounded-full px-2 py-0.5 ${open ? 'bg-accent/15 text-accent' : 'bg-soft text-muted'}`}>{STATUS_LABEL[l.status]}</span>
-          {l.negotiable && <span className="rounded-full bg-primary/15 px-2 py-0.5 text-primary">Négociable</span>}
+          {l.negotiable && <span className="rounded-full bg-primary/15 px-2 py-0.5 text-link">Négociable</span>}
         </p>
       </header>
       <p className="whitespace-pre-wrap break-words text-sm">{l.description}</p>
@@ -101,7 +101,7 @@ export default function ListingPage() {
           </div>
           {l.my_offer ? (
             <p className="card p-3 text-sm">Ton offre : <b>{fcfa(l.my_offer.amount)}</b> — {({ pending: 'en attente', countered: `contre-proposition ${fcfa(l.my_offer.counter_amount ?? 0)}`, accepted: 'acceptée !' } as Record<string, string>)[l.my_offer.status]}
-              {' '}<Link to={`/messages/${l.my_offer.conversation}`} className="text-primary">Voir la conversation</Link></p>
+              {' '}<Link to={`/messages/${l.my_offer.conversation}`} className="text-link">Voir la conversation</Link></p>
           ) : l.negotiable && l.status === 'published' && (offer === null
             ? <button className="btn-outline" onClick={() => setOffer('')}>Faire une offre</button>
             : (
@@ -117,7 +117,7 @@ export default function ListingPage() {
       {!mine && l.bought_by_me && !reviews.some((r) => r.listing === l.title && r.reviewer.id === user.id) && (
         <section className="card space-y-2 p-4">
           <h2 className="font-semibold">Laisser un avis vérifié</h2>
-          <div className="flex gap-1 text-2xl text-primary">{[1, 2, 3, 4, 5].map((n) => <button key={n} onClick={() => setRating(n)} aria-label={`${n} étoiles`}>{n <= rating ? '★' : '☆'}</button>)}</div>
+          <div className="flex gap-1 text-2xl text-link">{[1, 2, 3, 4, 5].map((n) => <button key={n} onClick={() => setRating(n)} aria-label={`${n} étoiles`}>{n <= rating ? '★' : '☆'}</button>)}</div>
           <input className="field" placeholder="Commentaire (facultatif)" maxLength={500} value={comment} onChange={(e) => setComment(e.target.value)} />
           <button className="btn" onClick={() => run(() => api(`/listings/${l.id}/reviews/`, { body: { rating, comment } }))}>Publier l'avis</button>
         </section>
@@ -150,7 +150,7 @@ export default function ListingPage() {
           <h2 className="font-semibold">Avis sur le vendeur</h2>
           {reviews.map((r) => (
             <div key={r.id} className="card p-3 text-sm">
-              <p><b>{r.reviewer.first_name}</b> <span className="text-primary"><Stars n={r.rating} /></span> <span className="text-xs text-muted">· {r.listing}</span></p>
+              <p><b>{r.reviewer.first_name}</b> <span className="text-link"><Stars n={r.rating} /></span> <span className="text-xs text-muted">· {r.listing}</span></p>
               {r.comment && <p className="mt-1">{r.comment}</p>}
               {r.reviewer.id !== user.id && <ReportButton type="review" id={r.id} />}
             </div>

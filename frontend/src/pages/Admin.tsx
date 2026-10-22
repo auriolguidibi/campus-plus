@@ -79,7 +79,7 @@ function Listings() {
           <div className="flex gap-2 pt-1">
             <button className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-fg" onClick={() => decide(l.id, 'approve')}>Publier</button>
             <button className="rounded-lg border border-line px-3 py-1.5 text-xs text-danger" onClick={() => decide(l.id, 'reject')}>Refuser</button>
-            <Link to={`/marketplace/${l.id}`} className="px-2 py-1.5 text-xs text-primary">Voir</Link>
+            <Link to={`/marketplace/${l.id}`} className="px-2 py-1.5 text-xs text-link">Voir</Link>
           </div>
         </div>
       ))}
@@ -144,7 +144,7 @@ function Content() {
         <div key={c.id} className="card flex items-center gap-2 p-3 text-sm"><Link to={`/communautes/${c.id}`} className="flex-1">{c.name} <span className="text-xs text-muted">· {c.members} membres</span></Link>
           {user?.staff_role === 'admin' && <button className="text-xs text-danger" onClick={() => delComm(c.id)}>Supprimer</button>}</div>
       ))}
-      <Link to="/confessions" className="card block p-3 text-sm font-semibold text-primary">Modération des confessions →</Link>
+      <Link to="/confessions" className="card block p-3 text-sm font-semibold text-link">Modération des confessions →</Link>
     </div>
   )
 }
@@ -160,7 +160,7 @@ function Categories() {
         <button className="rounded-xl bg-primary px-4 text-sm font-semibold text-primary-fg" disabled={!name.trim()} onClick={() => act(() => api('/admin/categories/', { body: { name } }), () => { setName(''); load() }, setErr)}>Ajouter</button></div>
       {data.map((c) => (
         <div key={c.id} className="card flex items-center justify-between p-3 text-sm"><span className={c.is_active ? '' : 'text-muted line-through'}>{c.name}</span>
-          <button className="text-xs text-primary" onClick={() => act(() => api(`/admin/categories/${c.id}/`, { method: 'PATCH', body: { is_active: !c.is_active } }), load, setErr)}>{c.is_active ? 'Désactiver' : 'Activer'}</button></div>
+          <button className="text-xs text-link" onClick={() => act(() => api(`/admin/categories/${c.id}/`, { method: 'PATCH', body: { is_active: !c.is_active } }), load, setErr)}>{c.is_active ? 'Désactiver' : 'Activer'}</button></div>
       ))}
     </div>
   )

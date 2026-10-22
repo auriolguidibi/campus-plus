@@ -90,7 +90,7 @@ export default function Stories() {
     <div className="mb-4">
       <div className="flex gap-3 overflow-x-auto pb-1" aria-label="Stories">
         <label className="flex w-16 shrink-0 cursor-pointer flex-col items-center gap-1 text-[11px]">
-          <span className="grid h-14 w-14 place-items-center rounded-full border-2 border-dashed border-primary text-2xl text-primary">{busy ? '…' : '+'}</span>
+          <span className="grid h-14 w-14 place-items-center rounded-full border-2 border-dashed border-primary text-2xl text-link">{busy ? '…' : '+'}</span>
           Ajouter
           <input type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => { upload(e.target.files?.[0]); e.target.value = '' }} />
         </label>

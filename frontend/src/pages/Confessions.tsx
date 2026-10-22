@@ -38,7 +38,7 @@ function Card({ c, onChange }: { c: Confession; onChange: (c: Confession) => voi
       <p className="whitespace-pre-wrap break-words text-sm">{c.text}</p>
       <p className="mt-2 text-xs text-muted">Anonyme · {timeAgo(c.created_at)}</p>
       <footer className="mt-2 flex items-center gap-5 text-sm text-muted">
-        <button onClick={react} className={c.reacted ? 'font-semibold text-primary' : ''}>♥ {c.reaction_count}</button>
+        <button onClick={react} className={c.reacted ? 'font-semibold text-link' : ''}>♥ {c.reaction_count}</button>
         <button onClick={() => setOpen(!open)}>💬 {c.comment_count}</button>
         <button onClick={report} className="ml-auto text-xs">Signaler</button>
       </footer>

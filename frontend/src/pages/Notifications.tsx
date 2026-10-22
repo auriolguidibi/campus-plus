@@ -38,7 +38,7 @@ export default function Notifications() {
     <div className="space-y-4 pt-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Notifications</h1>
-        <button className="text-sm font-semibold text-primary" onClick={() => setShowPrefs(!showPrefs)} aria-expanded={showPrefs}>Préférences</button>
+        <button className="text-sm font-semibold text-link" onClick={() => setShowPrefs(!showPrefs)} aria-expanded={showPrefs}>Préférences</button>
       </div>
 
       {showPrefs && (
@@ -59,7 +59,7 @@ export default function Notifications() {
               className={`rounded-full px-4 py-1.5 text-sm font-medium ${unreadOnly === v ? 'bg-primary text-primary-fg' : 'bg-soft text-muted'}`}>{l}</button>
           ))}
         </div>
-        <button className="text-xs text-primary" onClick={readAll}>Tout marquer comme lu</button>
+        <button className="text-xs text-link" onClick={readAll}>Tout marquer comme lu</button>
       </div>
 
       {items === null ? <Spinner /> : items.length === 0 ? (

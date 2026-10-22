@@ -10,12 +10,12 @@ export const CATEGORIES: Record<string, string> = {
 function CommunityRow({ c, onJoin }: { c: Community; onJoin?: () => void }) {
   return (
     <div className="card flex items-center gap-3 p-3">
-      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-primary/15 text-lg font-bold text-primary">{c.name.charAt(0).toUpperCase()}</div>
+      <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-primary/15 text-lg font-bold text-link">{c.name.charAt(0).toUpperCase()}</div>
       <Link to={`/communautes/${c.id}`} className="min-w-0 flex-1">
         <p className="truncate font-semibold">{c.name}</p>
         <p className="truncate text-xs text-muted">{CATEGORIES[c.category]} · {c.member_count} membre{c.member_count > 1 ? 's' : ''}</p>
       </Link>
-      {onJoin && <button onClick={onJoin} className="rounded-lg bg-primary/15 px-3 py-1.5 text-xs font-semibold text-primary">Rejoindre</button>}
+      {onJoin && <button onClick={onJoin} className="rounded-lg bg-primary/15 px-3 py-1.5 text-xs font-semibold text-link">Rejoindre</button>}
     </div>
   )
 }
@@ -61,7 +61,7 @@ export default function Communities() {
     <div className="space-y-4 pt-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Communautés</h1>
-        <button className="text-sm font-semibold text-primary" onClick={() => setCreating(!creating)}>{creating ? 'Fermer' : '+ Créer'}</button>
+        <button className="text-sm font-semibold text-link" onClick={() => setCreating(!creating)}>{creating ? 'Fermer' : '+ Créer'}</button>
       </div>
       {creating && <NewCommunity onDone={() => setCreating(false)} />}
       <div className="grid grid-cols-2 gap-2 rounded-xl bg-soft p-1" role="tablist">

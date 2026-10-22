@@ -56,10 +56,10 @@ export default function MyMarket() {
   const sold = (listings ?? []).filter((l) => l.status === 'sold')
   return (
     <div className="space-y-4 pt-6">
-      <Link to="/marketplace" className="text-sm text-primary">← Marketplace</Link>
+      <Link to="/marketplace" className="text-sm text-link">← Marketplace</Link>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Mon espace</h1>
-        <Link to="/marketplace/nouveau" className="text-sm font-semibold text-primary">+ Vendre</Link>
+        <Link to="/marketplace/nouveau" className="text-sm font-semibold text-link">+ Vendre</Link>
       </div>
       <div className="flex gap-2 overflow-x-auto" role="tablist">
         {TABS.map(([v, l]) => <button key={v} role="tab" aria-selected={tab === v} onClick={() => setTab(v)}

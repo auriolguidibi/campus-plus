@@ -3,13 +3,13 @@ import type { PublicUser } from '../api'
 
 export function Logo({ size = 40 }: { size?: number }) {
   return (
-    <div className="flex items-center gap-2 text-primary">
+    <div className="flex items-center gap-2 text-link">
       <svg width={size} height={size} viewBox="0 0 48 48" fill="currentColor" aria-hidden>
         <path d="M24 6 2 17l22 11 17-8.5V32h3V17z" />
         <path d="M11 25v8c0 3 6 7 13 7s13-4 13-7v-8l-13 6.500z" opacity=".75" />
       </svg>
       <span className="font-extrabold tracking-tight text-fg" style={{ fontSize: size * 0.8 }}>
-        Campus<span className="text-primary">+</span>
+        Campus<span className="text-link">+</span>
       </span>
     </div>
   )

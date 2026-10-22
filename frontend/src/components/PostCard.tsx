@@ -33,7 +33,7 @@ function Comments({ post, onCount }: { post: Post; onCount: (n: number) => void 
           <Link to={`/u/${c.author.username}`} className="font-bold">{c.author.first_name || c.author.username}</Link>{' '}
           <span className="text-xs text-muted">{timeAgo(c.created_at)}</span>
           <p className="whitespace-pre-wrap break-words">{c.text}</p>
-          {!nested && <button className="text-xs font-semibold text-primary" onClick={() => setReplyTo(c)}>Répondre</button>}
+          {!nested && <button className="text-xs font-semibold text-link" onClick={() => setReplyTo(c)}>Répondre</button>}
           {c.author.id !== me?.id && <span className="ml-3"><ReportButton type="comment" id={c.id} /></span>}
         </div>
       </div>
@@ -91,7 +91,7 @@ export default function PostCard({ post, onChange, onRemove }: { post: Post; onC
           <Link to={`/u/${post.author.username}`} className="block truncate font-semibold">{post.author.first_name} {post.author.last_name}</Link>
           <p className="truncate text-xs text-muted">
             {timeAgo(post.created_at)} · {post.author.field_of_study}
-            {post.community && <> · <Link to={`/communautes/${post.community}`} className="text-primary">{post.community_name}</Link></>}
+            {post.community && <> · <Link to={`/communautes/${post.community}`} className="text-link">{post.community_name}</Link></>}
           </p>
         </div>
         {mine && <button onClick={remove} className="text-xs text-danger">Supprimer</button>}
@@ -99,7 +99,7 @@ export default function PostCard({ post, onChange, onRemove }: { post: Post; onC
       {post.text && <p className="mt-3 whitespace-pre-wrap break-words text-sm">{post.text}</p>}
       <MediaGrid urls={post.media} />
       <footer className="mt-3 flex items-center gap-5 text-sm text-muted">
-        <button onClick={() => toggle('react')} className={post.reacted ? 'font-semibold text-primary' : ''}>♥ {post.reaction_count}</button>
+        <button onClick={() => toggle('react')} className={post.reacted ? 'font-semibold text-link' : ''}>♥ {post.reaction_count}</button>
         <button onClick={() => setOpen(!open)}>💬 {post.comment_count}</button>
         {!mine && <ReportButton type="post" id={post.id} />}
         <button onClick={() => toggle('favorite')} className={`ml-auto ${post.favorited ? 'font-semibold text-accent' : ''}`}>

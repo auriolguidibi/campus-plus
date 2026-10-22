@@ -53,7 +53,7 @@ export default function Market() {
     <div className="space-y-4 pt-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Marketplace</h1>
-        <Link to="/marketplace/mes-annonces" className="text-sm font-semibold text-primary">Mon espace</Link>
+        <Link to="/marketplace/mes-annonces" className="text-sm font-semibold text-link">Mon espace</Link>
       </div>
       <div className="flex gap-2">
         <input className="field" placeholder="Rechercher un produit, service…" value={q} onChange={(e) => setQ(e.target.value)} />
