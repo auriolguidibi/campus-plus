@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { api, ApiError, fcfa, type Listing, type PublicUser } from '../api'
 import { useAuth } from '../auth'
 import { STATUS_LABEL } from '../components/ListingCard'
+import { Img } from '../dataMode'
 import ReportButton from '../components/ReportButton'
 import { Avatar, ErrorBox, Spinner } from '../components/ui'
 
@@ -57,7 +58,7 @@ export default function ListingPage() {
       <Link to="/marketplace" className="inline-flex items-center gap-1 text-sm font-semibold text-link"><Icon name="back" size={18} /> Marketplace</Link>
       <div>
         <div className="aspect-square overflow-hidden rounded-xl2 bg-soft">
-          {l.images[pic] ? <img src={l.images[pic].url} alt={l.title} className="h-full w-full object-cover" /> : <div className="grid h-full place-items-center text-muted"><Icon name="shop" size={64} /></div>}
+          {l.images[pic] ? <Img src={l.images[pic].url} alt={l.title} className="h-full w-full object-cover" /> : <div className="grid h-full place-items-center text-muted"><Icon name="shop" size={64} /></div>}
         </div>
         {l.images.length > 1 && (
           <div className="mt-2 flex gap-2 overflow-x-auto">

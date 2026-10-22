@@ -8,7 +8,7 @@ interface AuthCtx {
   register: (data: Record<string, string>) => Promise<void>
   logout: () => Promise<void>
   saveTheme: (m: ThemeMode) => void
-  update: (patch: Partial<User>) => Promise<void>
+  update: (patch: Partial<User> | FormData) => Promise<void>
 }
 const Ctx = createContext<AuthCtx>(null as never)
 export const useAuth = () => useContext(Ctx)

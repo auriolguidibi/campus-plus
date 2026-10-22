@@ -4,6 +4,8 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { api, type Profile, type Relation } from '../api'
 import PostList from '../components/PostList'
 import ReportButton from '../components/ReportButton'
+import { MessageButton } from './Search'
+import { Img } from '../dataMode'
 import { Avatar, ErrorBox, Spinner } from '../components/ui'
 
 export default function UserProfile() {
@@ -42,20 +44,26 @@ export default function UserProfile() {
   return (
     <div className="space-y-5 pt-6">
       <button onClick={() => nav(-1)} className="inline-flex items-center gap-1 text-sm font-semibold text-link"><Icon name="back" size={18} /> Retour</button>
-      <section className="flex items-center gap-4">
-        <Avatar user={p} size={72} />
-        <div>
-          <h1 className="text-xl font-bold">{p.first_name} {p.last_name}</h1>
-          <p className="text-sm text-muted">@{p.username}</p>
-          <p className="text-sm text-muted">{p.field_of_study} · {p.promotion} · {p.school}</p>
+      <section className="-mx-4 -mt-6 bg-card pb-4">
+        <div className="aspect-[3/1] w-full overflow-hidden bg-gradient-to-br from-primary/50 to-accent/30">
+          {p.cover && <Img src={p.cover} className="h-full w-full object-cover" loadLabel="Afficher la couverture" />}
         </div>
+        <div className="-mt-10 px-4">
+          <span className="rounded-full border-4 border-card"><Avatar user={p} size={84} /></span>
+          <div className="mt-2">
+            <h1 className="text-xl font-bold leading-tight">{p.first_name} {p.last_name}</h1>
+            <p className="text-sm text-muted">@{p.username} · {p.field_of_study} · {p.promotion}</p>
+          </div>
+        </div>
+        <p className="mt-2 px-4 text-sm text-muted">{p.school}</p>
       </section>
       {p.bio && <p className="text-sm">{p.bio}</p>}
       <div className="card grid grid-cols-2 py-3 text-center">
         <div><b className="block text-lg">{p.friends_count}</b><span className="text-xs text-muted">Amis</span></div>
         <div><b className="block text-lg">{p.posts_count}</b><span className="text-xs text-muted">Publications</span></div>
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
+        <MessageButton id={p.id} className="!px-5 !py-3.5" />
         {buttons[p.relation].map(([label, fn, outline]) => (
           <button key={label} onClick={fn} className={outline ? 'btn-outline' : 'btn'}>{label}</button>
         ))}

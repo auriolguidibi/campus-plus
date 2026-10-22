@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import type { PublicUser } from '../api'
+import { useDataMode } from '../dataMode'
 import Icon from './Icon'
 
 export function Logo({ size = 40, tone = 'auto' }: { size?: number; tone?: 'auto' | 'light' }) {
@@ -13,11 +14,13 @@ export function Logo({ size = 40, tone = 'auto' }: { size?: number; tone?: 'auto
   )
 }
 
-export function Avatar({ user, size = 40 }: { user: Pick<PublicUser, 'first_name' | 'username'>; size?: number }) {
+export function Avatar({ user, size = 40, ring = false }: { user: Pick<PublicUser, 'first_name' | 'username'> & { avatar?: string | null }; size?: number; ring?: boolean }) {
+  const { free } = useDataMode()
   const letter = (user.first_name || user.username).charAt(0).toUpperCase()
+  const base = `shrink-0 rounded-full ${ring ? 'ring-2 ring-link ring-offset-2 ring-offset-card' : ''}`
+  if (user.avatar && !free) return <img src={user.avatar} alt="" loading="lazy" className={`${base} object-cover`} style={{ width: size, height: size }} />
   return (
-    <div className="grid shrink-0 place-items-center rounded-full bg-primary font-bold text-primary-fg"
-      style={{ width: size, height: size, fontSize: size * 0.42 }}>{letter}</div>
+    <div className={`grid place-items-center bg-primary font-bold text-primary-fg ${base}`} style={{ width: size, height: size, fontSize: size * 0.42 }}>{letter}</div>
   )
 }
 

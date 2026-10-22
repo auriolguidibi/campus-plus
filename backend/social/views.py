@@ -90,6 +90,9 @@ class PostViewSet(viewsets.ModelViewSet):
             qs = qs.filter(author__username__iexact=p['author'], community__isnull=True)
         elif p.get('scope') == 'campus':
             qs = qs.filter(community__isnull=True)
+        elif p.get('scope') == 'home':  # everyone on campus (any class), plus the groups I belong to
+            mine = Membership.objects.filter(community=OuterRef('community'), user=u)
+            qs = qs.filter(Q(community__isnull=True) | Exists(mine))
         elif p.get('scope') == 'favorites':
             qs = qs.filter(favorited=True)
         else:  # default feed: me + friends, plus communities I belong to

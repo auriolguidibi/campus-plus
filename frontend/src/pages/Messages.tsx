@@ -19,13 +19,14 @@ export function Conversations() {
 
   return (
     <div className="space-y-4 pt-6">
-      <h1 className="text-2xl font-bold">Messages</h1>
+      <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">Messages</h1>
+        <Link to="/recherche" className="flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-fg"><Icon name="edit" size={18} /> Nouveau</Link></div>
       <div className="flex items-center gap-2 rounded-2xl border border-line bg-soft px-3.5 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/15">
         <Icon name="search" size={20} className="text-muted" />
         <input className="min-w-0 flex-1 bg-transparent py-3.5 text-sm outline-none placeholder:text-muted/70" placeholder="Rechercher une conversation…" aria-label="Rechercher une conversation" value={q} onChange={(e) => setQ(e.target.value)} />
       </div>
       {items === null ? <Spinner /> : items.length === 0 ? (
-        <p className="py-8 text-center text-sm text-muted">Aucune conversation. Contacte un vendeur depuis la Marketplace.</p>
+        <p className="py-8 text-center text-sm text-muted">Aucune conversation. Appuie sur « Nouveau » pour écrire à n'importe quel étudiant, de toutes les classes.</p>
       ) : (
         <div className="card divide-y divide-line px-3">
           {items.map((c) => (

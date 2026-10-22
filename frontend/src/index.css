@@ -17,3 +17,9 @@ body { @apply bg-bg text-fg antialiased; font-family: Inter, system-ui, 'Segoe U
 .card { @apply rounded-xl2 border border-line bg-card; }
 .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
 .pt-safe { padding-top: env(safe-area-inset-top); }
+
+/* Native dropdowns: make the popup follow the theme so option text is always readable. */
+:root { color-scheme: light; }
+.dark { color-scheme: dark; }
+select, option { color: rgb(var(--fg)); }
+select option { background-color: rgb(var(--card)); color: rgb(var(--fg)); }

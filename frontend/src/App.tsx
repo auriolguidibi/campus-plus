@@ -7,6 +7,9 @@ import Feed from './pages/Feed'
 import Create from './pages/Create'
 import Profile from './pages/Profile'
 import Admin from './pages/Admin'
+import MenuPage from './pages/MenuPage'
+import PostPage from './pages/PostPage'
+import Search from './pages/Search'
 import Notifications from './pages/Notifications'
 import Market from './pages/Market'
 import { ChallengePage, Challenges } from './pages/Challenges'
@@ -58,6 +61,9 @@ export default function App() {
         <Route path="evenements" element={<Events />} />
         <Route path="evenements/nouveau" element={<EventForm />} />
         <Route path="evenements/:id" element={<EventPage />} />
+        <Route path="menu" element={<MenuPage />} />
+        <Route path="recherche" element={<Search />} />
+        <Route path="publication/:id" element={<PostPage />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="admin" element={<Admin />} />
         <Route path="classement" element={<Leaderboard />} />

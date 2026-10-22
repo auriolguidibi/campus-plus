@@ -3,6 +3,7 @@ import Banner from '../components/Banner'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { api, ApiError, type CampusEvent, type Page } from '../api'
 import { useAuth } from '../auth'
+import { Img } from '../dataMode'
 import Icon from '../components/Icon'
 import { Field, SelectField, Submit, TextArea } from '../components/form'
 import { ErrorBox, Spinner } from '../components/ui'
@@ -31,7 +32,7 @@ export function Events() {
         <div className="space-y-3">
           {items.map((e) => (
             <Link key={e.id} to={`/evenements/${e.id}`} className="card block overflow-hidden">
-              <img src={e.image ?? '/img/lake.jpg'} alt="" loading="lazy" className="h-32 w-full object-cover" />
+              <Img src={e.image ?? '/img/lake.jpg'} className="h-32 w-full object-cover" />
               <div className="p-4"><p className="text-xs text-link">{CATS[e.category]}</p><p className="font-semibold">{e.title}</p>
                 <p className="text-xs text-muted">{when(e.starts_at)} · {e.location}</p>
                 <p className="mt-1 text-xs text-muted">{e.going_count} participant{e.going_count > 1 ? 's' : ''}{e.going && ' · tu y vas'}</p></div>

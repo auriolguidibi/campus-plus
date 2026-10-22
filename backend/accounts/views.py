@@ -5,11 +5,13 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 
+from .images import process_cropped
 from .models import User
 from .serializers import LoginSerializer, RegisterSerializer, UserSerializer
 
@@ -60,14 +62,26 @@ class LogoutView(APIView):
 
 
 class MeView(APIView):
+    parser_classes = [JSONParser, MultiPartParser, FormParser]
+
     def get(self, request):
         return Response(UserSerializer(request.user).data)
 
     def patch(self, request):
         ser = UserSerializer(request.user, data=request.data, partial=True)
         ser.is_valid(raise_exception=True)
-        ser.save()
-        return Response(ser.data)
+        user = ser.save()
+        # Profile photo (square 512) and cover (3:1, 1500 px): validated, cropped and recompressed server-side.
+        for field, size in (('avatar', (512, 512)), ('cover', (1500, 500))):
+            f = request.FILES.get(field)
+            if f:
+                getattr(user, field).delete(save=False)
+                setattr(user, field, process_cropped(f, size, f'{field}.jpg'))
+            elif str(request.data.get(f'remove_{field}', '')).lower() in ('1', 'true'):
+                getattr(user, field).delete(save=False)
+                setattr(user, field, '')
+        user.save()
+        return Response(UserSerializer(user).data)
 
     def delete(self, request):
         # Re-authentication required; the account is anonymised (history of sales/messages must stay consistent).

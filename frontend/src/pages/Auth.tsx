@@ -3,24 +3,27 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { api, ApiError } from '../api'
 import { useAuth } from '../auth'
 import Icon from '../components/Icon'
-import { Check, Field, SelectField, StrengthMeter, Submit, passwordStrength } from '../components/form'
+import { Check, Field, StrengthMeter, Submit, passwordStrength } from '../components/form'
+import { useDataMode } from '../dataMode'
 import { ErrorBox, Logo } from '../components/ui'
 
 const shade = (img: string) => `linear-gradient(180deg, rgb(24 10 70 / .30) 0%, rgb(24 10 70 / .50) 40%, rgb(24 10 70 / .93) 100%), url('/img/${img}.jpg')`
+const solid = 'linear-gradient(180deg, rgb(24 10 70), rgb(60 20 120))'
 const HERO = shade('welcome')
 const HEADER = shade('hero')
 
 export function Welcome() {
+  const { free } = useDataMode()
   return (
     <div className="relative mx-auto flex min-h-dvh max-w-md flex-col justify-between bg-cover bg-center px-6 pb-8 pt-safe text-white"
-      style={{ backgroundImage: HERO, backgroundPosition: 'center 25%' }}>
+      style={{ backgroundImage: free ? solid : HERO, backgroundPosition: 'center 25%' }}>
       <div className="mt-20 flex flex-col items-center gap-3 text-center">
         <Logo size={56} tone="light" />
         <p className="text-base font-medium text-white/90">Ton école. Tes amis. Tes délires.</p>
       </div>
       <div className="space-y-3">
         <ul className="mb-6 space-y-2 text-sm text-white/85">
-          {([['users', 'Retrouve ta promo, tes clubs et tes groupes'], ['shop', 'Achète et vends entre étudiants'], ['trophy', 'Relève des défis et grimpe au classement']] as const).map(([i, t]) => (
+          {([['users', 'Discute avec tous les étudiants, quelle que soit leur classe'], ['shop', 'Publie, partage et vends entre étudiants'], ['trophy', 'Relève des défis et grimpe au classement']] as const).map(([i, t]) => (
             <li key={t} className="flex items-center gap-3"><span className="grid h-8 w-8 place-items-center rounded-full bg-white/15"><Icon name={i} size={18} /></span>{t}</li>
           ))}
         </ul>
@@ -33,9 +36,10 @@ export function Welcome() {
 }
 
 function Shell({ tab, children }: { tab?: 'login' | 'register'; children: ReactNode }) {
+  const { free } = useDataMode()
   return (
     <div className="mx-auto min-h-dvh max-w-md">
-      <header className="relative flex h-60 flex-col items-center justify-center gap-2 bg-cover bg-center pt-safe text-white" style={{ backgroundImage: HEADER, backgroundPosition: 'center 35%' }}>
+      <header className="relative flex h-60 flex-col items-center justify-center gap-2 bg-cover bg-center pt-safe text-white" style={{ backgroundImage: free ? solid : HEADER, backgroundPosition: 'center 35%' }}>
         <Logo size={44} tone="light" />
         <p className="text-sm text-white/90">Ton école. Tes amis. Tes délires.</p>
       </header>
@@ -176,10 +180,17 @@ export function Register() {
           <>
             <Field label="Établissement" icon="building" value={f.school ?? ''} onChange={set('school')} error={errs.school} placeholder="EIG Bénin" required />
             <Field label="Filière" icon="school" value={f.field_of_study ?? ''} onChange={set('field_of_study')} error={errs.field_of_study} placeholder="Génie logiciel" required />
-            <SelectField label="Promotion" icon="users" value={f.promotion ?? ''} onChange={set('promotion')} error={errs.promotion} required>
-              <option value="" disabled>Choisir…</option>
-              {PROMOS.map((p) => <option key={p} value={p}>{p}</option>)}
-            </SelectField>
+            <fieldset>
+              <legend className="mb-1.5 text-xs font-semibold text-muted">Promotion / classe <span className="text-danger">*</span></legend>
+              <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Promotion">
+                {PROMOS.map((p) => (
+                  <button key={p} type="button" role="radio" aria-checked={f.promotion === p} onClick={() => { setF({ ...f, promotion: p }); setErrs({ ...errs, promotion: '' }) }}
+                    className={`rounded-full border-2 px-4 py-2 text-sm font-semibold ${f.promotion === p ? 'border-primary bg-primary text-primary-fg' : 'border-line bg-soft text-fg'}`}>{p}</button>
+                ))}
+              </div>
+              {errs.promotion && <p role="alert" className="mt-1 text-xs text-danger">{errs.promotion}</p>}
+              <p className="mt-1 text-xs text-muted">Tu pourras discuter avec les étudiants de toutes les classes.</p>
+            </fieldset>
             <Field label="Code d'invitation" icon="key" value={f.invite_code ?? ''} onChange={set('invite_code')} error={errs.invite_code}
               hint="Fourni par ton école. Sans code valide, ton compte sera vérifié par un administrateur." autoCapitalize="characters" />
           </>

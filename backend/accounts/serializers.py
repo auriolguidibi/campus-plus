@@ -5,20 +5,38 @@ from rest_framework import serializers
 from .models import User
 
 
+def _url(f):
+    return f.url if f else None
+
+
 class UserSerializer(serializers.ModelSerializer):
     """Own profile. `verification` and identity fields are read-only so users cannot self-promote."""
+
+    avatar = serializers.SerializerMethodField()
+    cover = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = ['id', 'username', 'first_name', 'last_name', 'email', 'school', 'is_staff', 'staff_role',
-                  'field_of_study', 'promotion', 'bio', 'theme', 'verification']
+                  'field_of_study', 'promotion', 'bio', 'theme', 'verification', 'avatar', 'cover']
         read_only_fields = ['id', 'email', 'verification', 'is_staff', 'staff_role']
+
+    def get_avatar(self, u):
+        return _url(u.avatar)
+
+    def get_cover(self, u):
+        return _url(u.cover)
 
 
 class PublicUserSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'field_of_study', 'promotion', 'verification']
+        fields = ['id', 'username', 'first_name', 'last_name', 'field_of_study', 'promotion', 'verification', 'avatar']
+
+    def get_avatar(self, u):
+        return _url(u.avatar)
 
 
 class RegisterSerializer(serializers.ModelSerializer):

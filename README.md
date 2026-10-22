@@ -68,3 +68,11 @@ Pas encore fait : notifications push, invitations/annonces de groupe (fonctionna
 - Icônes : Iconify (jeu Solar) intégrées à la compilation via `unplugin-icons`, sans appel réseau au runtime ; les emojis d'interface ont été remplacés.
 - Images : photos fournies par l'équipe (étudiants EIG / événement Offline) : fond de l'écran de bienvenue, en-tête des écrans de connexion, bannières de rubriques et couverture par défaut des événements (`frontend/public/img/`, redimensionnées et compressées).
 - Messagerie : notes vocales (enregistrement navigateur, 120 s max, contenu vérifié côté serveur), appels audio et vidéo WebRTC pair-à-pair avec signalisation par l'API (sonnerie, répondre/refuser, micro, caméra, historique d'appels dans la conversation). Un relais TURN (`CALL_TURN_*`) est nécessaire derrière certains réseaux (4G, pare-feu stricts).
+
+## Accueil façon Facebook, mode gratuit, photos de profil
+
+- Accueil : barre « Mode payant / Mode gratuit », logo + boutons ronds (créer, rechercher, menu), rangée d'icônes avec pastilles (accueil, amis, messages, défis, notifications, marketplace), zone « À quoi pensez-vous ? », cartes de stories verticales, publications pleine largeur (collage photos, J'aime / Commenter / Partager, menu ⋯ et masquage). `/menu` regroupe toutes les rubriques, `/recherche` cherche étudiants, communautés et annonces.
+- **Mode gratuit** (économie de données) : aucune photo n'est téléchargée tant qu'on ne la touche pas (publications, stories, annonces, couvertures, avatars) ; le choix est mémorisé sur l'appareil. **Mode payant** : tout se charge.
+- Tous les étudiants peuvent se voir, se rechercher et s'écrire quelle que soit leur classe ou promotion (« Pour toi » = tout le campus + mes groupes).
+- Photo de profil et de couverture : ajout, remplacement et suppression (recadrage et recompression côté serveur).
+- 50 tests backend.

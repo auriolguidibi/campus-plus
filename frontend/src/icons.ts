@@ -1,6 +1,18 @@
 // Generated list of Iconify (Solar set) icons, bundled at build time by unplugin-icons: no runtime network call.
 import loginL from '~icons/solar/login-2-linear'
 import loginB from '~icons/solar/login-2-bold'
+import likeL from '~icons/solar/like-linear'
+import likeB from '~icons/solar/like-bold'
+import menuL from '~icons/solar/hamburger-menu-linear'
+import menuB from '~icons/solar/hamburger-menu-bold'
+import helpL from '~icons/solar/question-circle-linear'
+import helpB from '~icons/solar/question-circle-bold'
+import camera2L from '~icons/solar/camera-add-linear'
+import camera2B from '~icons/solar/camera-add-bold'
+import downloadL from '~icons/solar/cloud-download-linear'
+import downloadB from '~icons/solar/cloud-download-bold'
+import signalL from '~icons/solar/wi-fi-router-linear'
+import signalB from '~icons/solar/wi-fi-router-bold'
 import type { ComponentType, SVGProps } from 'react'
 import homeL from '~icons/solar/home-2-linear'
 import homeB from '~icons/solar/home-2-bold'
@@ -181,6 +193,12 @@ import plusB from '~icons/solar/add-circle-bold'
 
 export type IconComp = ComponentType<SVGProps<SVGSVGElement>>
 export const ICONS = {
+  like: { linear: likeL, bold: likeB },
+  menu: { linear: menuL, bold: menuB },
+  help: { linear: helpL, bold: helpB },
+  camera2: { linear: camera2L, bold: camera2B },
+  download: { linear: downloadL, bold: downloadB },
+  signal: { linear: signalL, bold: signalB },
   login: { linear: loginL, bold: loginB },
   home: { linear: homeL, bold: homeB },
   users: { linear: usersL, bold: usersB },

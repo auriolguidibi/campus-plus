@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import Icon from '../components/Icon'
 import { Link } from 'react-router-dom'
-import { api, type PublicUser } from '../api'
+import { api, ApiError, type PublicUser } from '../api'
 import PostList from '../components/PostList'
 import { useAuth } from '../auth'
+import { Img } from '../dataMode'
 import { Avatar } from '../components/ui'
 import { useTheme, type ThemeMode } from '../theme'
 
@@ -17,7 +18,20 @@ export default function Profile() {
   const [saved, setSaved] = useState(false)
   const [blocked, setBlocked] = useState<PublicUser[]>([])
   useEffect(() => { api<PublicUser[]>('/blocks/').then(setBlocked).catch(() => {}) }, [])
+  const [photoErr, setPhotoErr] = useState('')
+  const [busyPhoto, setBusyPhoto] = useState(false)
   if (!user) return null
+
+  async function sendPhoto(field: 'avatar' | 'cover', file?: File) {
+    if (!file) return
+    const fd = new FormData(); fd.append(field, file)
+    setPhotoErr(''); setBusyPhoto(true)
+    try { await update(fd) } catch (x) { setPhotoErr(x instanceof ApiError ? (x.data?.[field] ? [x.data[field]].flat().join(' ') : x.text) : 'Envoi impossible.') } finally { setBusyPhoto(false) }
+  }
+  async function removePhoto(field: 'avatar' | 'cover') {
+    const fd = new FormData(); fd.append(`remove_${field}`, 'true')
+    await update(fd)
+  }
 
   async function deleteAccount() {
     if (!confirm('Supprimer définitivement ton compte ? Cette action est irréversible.')) return
@@ -29,13 +43,34 @@ export default function Profile() {
 
   return (
     <div className="space-y-6 pt-6">
-      <section className="flex items-center gap-4">
-        <Avatar user={user} size={72} />
-        <div>
-          <h1 className="text-xl font-bold">{user.first_name} {user.last_name}</h1>
-          <p className="text-sm text-muted">@{user.username} · {user.field_of_study} · {user.promotion}</p>
-          <p className={`text-xs font-semibold ${user.verification === 'verified' ? 'text-accent' : 'text-muted'}`}>{BADGE[user.verification]}</p>
+      <section className="-mx-4 -mt-6 bg-card pb-4">
+        <div className="relative aspect-[3/1] w-full bg-gradient-to-br from-primary/50 to-accent/30">
+          {user.cover && <Img src={user.cover} className="h-full w-full object-cover" loadLabel="Afficher la couverture" />}
+          <label className="absolute bottom-2 right-2 flex cursor-pointer items-center gap-1.5 rounded-full bg-black/55 px-3 py-1.5 text-xs font-semibold text-white">
+            <Icon name="camera" size={16} /> {user.cover ? 'Changer' : 'Ajouter une couverture'}
+            <input type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => { sendPhoto('cover', e.target.files?.[0]); e.target.value = '' }} />
+          </label>
         </div>
+        <div className="-mt-12 px-4">
+          <div className="relative w-fit">
+            <span className="block rounded-full border-4 border-card"><Avatar user={user} size={96} /></span>
+            <label className="absolute bottom-0 right-0 grid h-9 w-9 cursor-pointer place-items-center rounded-full border-2 border-card bg-soft" aria-label="Changer la photo de profil">
+              <Icon name="camera" bold size={18} />
+              <input type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => { sendPhoto('avatar', e.target.files?.[0]); e.target.value = '' }} />
+            </label>
+          </div>
+          <div className="mt-2">
+            <h1 className="text-xl font-bold leading-tight">{user.first_name} {user.last_name}</h1>
+            <p className="text-sm text-muted">@{user.username} · {user.field_of_study} · {user.promotion}</p>
+            <p className={`text-xs font-semibold ${user.verification === 'verified' ? 'text-accent' : 'text-muted'}`}>{BADGE[user.verification]}</p>
+          </div>
+        </div>
+        <div className="mt-3 flex gap-4 px-4 text-xs">
+          {user.avatar && <button className="text-danger" onClick={() => removePhoto('avatar')}>Retirer la photo de profil</button>}
+          {user.cover && <button className="text-danger" onClick={() => removePhoto('cover')}>Retirer la couverture</button>}
+        </div>
+        {photoErr && <p role="alert" className="mx-4 mt-2 rounded-xl bg-danger/10 px-3 py-2 text-sm text-danger">{photoErr}</p>}
+        {busyPhoto && <p role="status" className="mx-4 mt-2 text-xs text-muted">Envoi de la photo…</p>}
       </section>
 
       <section className="card space-y-2 p-4">

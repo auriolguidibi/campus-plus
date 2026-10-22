@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api, type Profile, type PublicUser } from '../api'
 import { Avatar } from '../components/ui'
+import { MessageButton } from './Search'
 
 function Row({ u, children }: { u: PublicUser; children?: React.ReactNode }) {
   return (
@@ -74,7 +75,7 @@ export default function Friends() {
         <h2 className="font-semibold">Mes amis ({friends.length})</h2>
         <div className="card mt-2 px-4 py-2">
           {friends.length === 0 && <p className="py-3 text-sm text-muted">Pas encore d'amis. Utilise la recherche ci-dessus.</p>}
-          {friends.map((u) => <Row key={u.id} u={u} />)}
+          {friends.map((u) => <Row key={u.id} u={u}><MessageButton id={u.id} label="" /></Row>)}
         </div>
       </section>
     </div>

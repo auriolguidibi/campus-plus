@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useDataMode } from '../dataMode'
 import Icon from './Icon'
 import { api, ApiError, type PublicUser, type StoryGroup } from '../api'
 import { useAuth } from '../auth'
@@ -68,6 +69,7 @@ function Viewer({ group, onClose, onSeen }: { group: StoryGroup; onClose: () => 
 
 export default function Stories() {
   const { user } = useAuth()
+  const { free } = useDataMode()
   const [groups, setGroups] = useState<StoryGroup[]>([])
   const [open, setOpen] = useState<StoryGroup | null>(null)
   const [vis, setVis] = useState('everyone')
@@ -86,31 +88,38 @@ export default function Stories() {
     try { await api('/stories/', { body: fd }); load() } catch (x) { setErr(x instanceof ApiError ? x.text : 'Envoi impossible.') } finally { setBusy(false) }
   }
 
-  const mineGroup = groups.find((g) => g.author.id === user?.id)
+  const card = 'relative h-[184px] w-[105px] shrink-0 overflow-hidden rounded-xl border border-line bg-soft text-left'
   return (
-    <div className="mb-4">
-      <div className="flex gap-3 overflow-x-auto pb-1" aria-label="Stories">
-        <label className="flex w-16 shrink-0 cursor-pointer flex-col items-center gap-1 text-[11px]">
-          <span className="grid h-14 w-14 place-items-center rounded-full border-2 border-dashed border-primary text-2xl text-link">{busy ? '…' : '+'}</span>
-          Ajouter
+    <div>
+      <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1" aria-label="Stories">
+        <label className={`${card} flex cursor-pointer flex-col bg-card`}>
+          <span className="block h-[132px] w-full overflow-hidden bg-primary/15">
+            {user?.avatar && !free ? <img src={user.avatar} alt="" className="h-full w-full object-cover" />
+              : <span className="grid h-full place-items-center text-4xl font-bold text-link">{(user?.first_name ?? '?').charAt(0)}</span>}
+          </span>
+          <span className="absolute left-1/2 top-[118px] grid h-8 w-8 -translate-x-1/2 place-items-center rounded-full border-[3px] border-card bg-primary text-primary-fg">
+            {busy ? <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-primary-fg/40 border-t-primary-fg" /> : <Icon name="add" bold size={20} />}
+          </span>
+          <span className="mt-auto px-1 pb-2 text-center text-xs font-semibold leading-tight">Créer une story</span>
           <input type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => { upload(e.target.files?.[0]); e.target.value = '' }} />
         </label>
-        {groups.map((g) => (
-          <button key={g.author.id} onClick={() => setOpen(g)} className="flex w-16 shrink-0 flex-col items-center gap-1 text-[11px]">
-            <span className={`rounded-full p-0.5 ${g.all_seen ? 'bg-line' : 'bg-gradient-to-tr from-primary to-accent'}`}>
-              <span className="block rounded-full bg-bg p-0.5"><Avatar user={g.author} size={48} /></span>
-            </span>
-            <span className="w-full truncate">{g.author.id === user?.id ? 'Ma story' : g.author.first_name}</span>
-          </button>
-        ))}
+        {groups.map((g) => {
+          const cover = g.stories[g.stories.length - 1]
+          return (
+            <button key={g.author.id} onClick={() => setOpen(g)} className={card} aria-label={`Story de ${g.author.first_name}`}>
+              {!free ? <img src={cover.url} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" /> : <span className="absolute inset-0 bg-gradient-to-br from-primary/60 to-accent/40" />}
+              <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/25" />
+              <span className={`absolute left-2 top-2 grid h-6 min-w-6 place-items-center rounded-md px-1 text-xs font-bold ${g.all_seen ? 'bg-white/70 text-slate-800' : 'bg-primary text-primary-fg'}`}>{g.stories.length}</span>
+              <span className="absolute inset-x-2 bottom-2 truncate text-xs font-bold text-white">{g.author.id === user?.id ? 'Ma story' : `${g.author.first_name} ${g.author.last_name}`}</span>
+            </button>
+          )
+        })}
       </div>
-      {!mineGroup && (
-        <label className="mt-1 flex items-center gap-2 text-xs text-muted">Visibilité de ta prochaine story :
-          <select value={vis} onChange={(e) => setVis(e.target.value)} className="rounded-lg border border-line bg-soft px-2 py-1">
-            <option value="everyone">Tout le campus</option><option value="friends">Amis uniquement</option>
-          </select>
-        </label>
-      )}
+      <label className="mt-1 flex items-center gap-2 text-xs text-muted">Visibilité de ta prochaine story :
+        <select value={vis} onChange={(e) => setVis(e.target.value)} className="rounded-lg border border-line bg-soft px-2 py-1">
+          <option value="everyone">Tout le campus</option><option value="friends">Amis uniquement</option>
+        </select>
+      </label>
       <ErrorBox>{err}</ErrorBox>
       {open && <Viewer group={open} onClose={() => { setOpen(null); load() }} onSeen={load} />}
     </div>

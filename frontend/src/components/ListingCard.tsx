@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Img } from '../dataMode'
 import Icon from './Icon'
 import { Link } from 'react-router-dom'
 import { api, fcfa, type Listing } from '../api'
@@ -18,7 +19,7 @@ export default function ListingCard({ l, badge }: { l: Listing; badge?: boolean 
   return (
     <Link to={`/marketplace/${l.id}`} className="card block overflow-hidden">
       <div className="relative aspect-square bg-soft">
-        {l.images[0] ? <img src={l.images[0].url} alt="" loading="lazy" className="h-full w-full object-cover" />
+        {l.images[0] ? <Img src={l.images[0].url} className="h-full w-full object-cover" />
           : <div className="grid h-full place-items-center text-muted"><Icon name="shop" size={40} /></div>}
         <button onClick={toggle} aria-label={fav ? 'Retirer des favoris' : 'Ajouter aux favoris'}
           className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full bg-card/90 text-lg"><Icon name="heart" bold={fav} size={18} className={fav ? 'text-danger' : ''} /></button>

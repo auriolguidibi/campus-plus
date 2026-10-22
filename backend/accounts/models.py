@@ -31,6 +31,8 @@ class User(AbstractUser):
     # Only changeable server-side by an administrator (see moderation.views); never writable from a profile payload.
     role = models.CharField(max_length=10, choices=Role.choices, default=Role.USER)
     suspension_reason = models.CharField(max_length=200, blank=True)
+    avatar = models.ImageField(upload_to='avatars/', blank=True)
+    cover = models.ImageField(upload_to='covers/', blank=True)
 
     REQUIRED_FIELDS = ['email']
 
@@ -51,6 +53,8 @@ class User(AbstractUser):
         self.email = f'supprime-{self.pk}@deleted.invalid'
         self.first_name = self.last_name = self.bio = self.school = self.field_of_study = self.promotion = ''
         self.is_active, self.is_staff, self.role = False, False, self.Role.USER
+        self.avatar.delete(save=False)
+        self.cover.delete(save=False)
         self.set_unusable_password()
         self.save()
         self.auth_token.delete() if hasattr(self, 'auth_token') else None

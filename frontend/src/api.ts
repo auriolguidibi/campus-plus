@@ -39,11 +39,12 @@ export async function api<T = any>(path: string, opts: { method?: string; body?:
 }
 
 export interface User {
+  avatar: string | null; cover: string | null
   id: number; username: string; first_name: string; last_name: string; email: string; school: string; is_staff: boolean; staff_role: 'user' | 'moderator' | 'admin'
   field_of_study: string; promotion: string; bio: string; theme: 'light' | 'dark' | 'auto'
   verification: 'pending' | 'verified' | 'rejected'
 }
-export interface PublicUser { id: number; username: string; first_name: string; last_name: string; field_of_study: string; promotion: string }
+export interface PublicUser { avatar?: string | null; id: number; username: string; first_name: string; last_name: string; field_of_study: string; promotion: string }
 export interface Post {
   id: number; author: PublicUser; text: string; created_at: string; reaction_count: number
   comment_count: number; reacted: boolean; favorited: boolean
@@ -51,7 +52,7 @@ export interface Post {
 }
 export type Relation = 'self' | 'none' | 'friends' | 'request_sent' | 'request_received'
 export interface Profile extends PublicUser {
-  school: string; bio: string; relation: Relation; friends_count: number; posts_count: number
+  cover?: string | null; school: string; bio: string; relation: Relation; friends_count: number; posts_count: number
 }
 export type Role = 'creator' | 'admin' | 'moderator' | 'member'
 export interface Community {

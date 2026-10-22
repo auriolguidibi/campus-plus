@@ -15,8 +15,13 @@ class ProfileSerializer(PublicUserSerializer):
     friends_count = serializers.SerializerMethodField()
     posts_count = serializers.SerializerMethodField()
 
+    cover = serializers.SerializerMethodField()
+
     class Meta(PublicUserSerializer.Meta):
-        fields = PublicUserSerializer.Meta.fields + ['school', 'bio', 'relation', 'friends_count', 'posts_count']
+        fields = PublicUserSerializer.Meta.fields + ['school', 'bio', 'cover', 'relation', 'friends_count', 'posts_count']
+
+    def get_cover(self, u):
+        return u.cover.url if u.cover else None
 
     def get_relation(self, u):
         return relation(self.context['request'].user, u)

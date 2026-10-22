@@ -24,7 +24,7 @@ export default function PostList({ query, empty }: { query: string; empty: strin
 
   return (
     <>
-      <div className="space-y-4">
+      <div className="space-y-1.5">
         {posts.map((p) => (
           <PostCard key={p.id} post={p} onChange={(n) => setPosts((l) => l.map((x) => (x.id === n.id ? n : x)))}
             onRemove={() => setPosts((l) => l.filter((x) => x.id !== p.id))} />
