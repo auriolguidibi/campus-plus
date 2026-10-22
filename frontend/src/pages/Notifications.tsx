@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from 'react'
+import Icon from '../components/Icon'
 import { useNavigate } from 'react-router-dom'
 import { api, type Page } from '../api'
+import type { IconName } from '../icons'
 import { Spinner, timeAgo } from '../components/ui'
 
 interface Notif { id: number; category: string; text: string; link: string; created_at: string; read: boolean }
 interface Pref { category: string; label: string; enabled: boolean; locked: boolean }
 
-const ICON: Record<string, string> = { friends: '🤝', social: '💬', messages: '✉️', groups: '👥', challenges: '🏆', events: '📅', market: '🛍️', system: '🛡️' }
+const ICON: Record<string, IconName> = { friends: 'userPlus', social: 'chatLine', messages: 'chat', groups: 'users', challenges: 'trophy', events: 'calendar', market: 'shop', system: 'shield' }
 
 export default function Notifications() {
   const nav = useNavigate()
@@ -45,7 +47,7 @@ export default function Notifications() {
         <section className="card divide-y divide-line px-4" aria-label="Préférences de notification">
           {prefs === null ? <Spinner /> : prefs.map((p) => (
             <label key={p.category} className="flex items-center justify-between py-3 text-sm">
-              <span>{ICON[p.category]} {p.label}{p.locked && <span className="text-xs text-muted"> (toujours actif)</span>}</span>
+              <span className="flex items-center gap-2"><Icon name={ICON[p.category]} size={20} /> {p.label}{p.locked && <span className="text-xs text-muted"> (toujours actif)</span>}</span>
               <input type="checkbox" checked={p.enabled} disabled={p.locked} onChange={() => toggle(p)} className="h-5 w-5" />
             </label>
           ))}
@@ -69,7 +71,7 @@ export default function Notifications() {
           {items.map((n) => (
             <li key={n.id}>
               <button onClick={() => open(n)} className={`flex w-full items-start gap-3 px-4 py-3 text-left ${n.read ? '' : 'bg-primary/5'}`}>
-                <span className="text-xl" aria-hidden>{ICON[n.category]}</span>
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary/10 text-link"><Icon name={ICON[n.category]} size={20} /></span>
                 <span className="min-w-0 flex-1"><span className={`block text-sm ${n.read ? 'text-muted' : 'font-semibold'}`}>{n.text}</span><span className="text-xs text-muted">{timeAgo(n.created_at)}</span></span>
                 {!n.read && <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-primary" aria-label="Non lue" />}
               </button>

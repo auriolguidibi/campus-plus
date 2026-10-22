@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
+import Banner from '../components/Banner'
+import Icon from '../components/Icon'
 import { Link, useParams } from 'react-router-dom'
 import { api, ApiError, type Challenge, type PublicUser } from '../api'
 import { ErrorBox, Spinner } from '../components/ui'
@@ -11,7 +13,8 @@ export function Challenges() {
   useEffect(() => { setItems(null); api<Challenge[]>(`/challenges/?status=${tab}`).then(setItems).catch(() => setItems([])) }, [tab])
   return (
     <div className="space-y-4 pt-6">
-      <div className="flex items-center justify-between"><h1 className="text-2xl font-bold">Défis & Battles</h1><Link to="/classement" className="text-sm font-semibold text-link">Classement</Link></div>
+      <Banner title="Défis & Battles" subtitle="Relève des défis, gagne des points" icon="trophy"
+        action={<Link to="/classement" className="rounded-full bg-white/20 px-3 py-1.5 text-xs font-semibold">Classement</Link>} />
       <div className="grid grid-cols-3 gap-1 rounded-xl bg-soft p-1" role="tablist">
         {([['open', 'En cours'], ['mine', 'Mes participations'], ['closed', 'Terminés']] as const).map(([v, l]) => (
           <button key={v} role="tab" aria-selected={tab === v} onClick={() => setTab(v)} className={`rounded-lg py-2 text-xs font-semibold ${tab === v ? 'bg-primary text-primary-fg' : 'text-muted'}`}>{l}</button>
@@ -69,7 +72,7 @@ export function ChallengePage() {
 
   return (
     <div className="space-y-4 pt-6">
-      <Link to="/defis" className="text-sm text-link">← Défis</Link>
+      <Link to="/defis" className="inline-flex items-center gap-1 text-sm font-semibold text-link"><Icon name="back" size={18} /> Défis</Link>
       <header>
         <p className="text-xs text-muted">{c.kind_label} · {c.max_points} points maximum</p>
         <h1 className="text-xl font-bold">{c.title}</h1>
@@ -98,7 +101,7 @@ export function ChallengePage() {
           )) : (
             <>
               <textarea className="field min-h-28" placeholder="Ta réponse" maxLength={3000} value={answer} onChange={(e) => setAnswer(e.target.value)} />
-              <label className="btn-outline block cursor-pointer text-center">{file ? `📷 ${file.name}` : '📷 Joindre une photo'}<input type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => setFile(e.target.files?.[0] ?? null)} /></label>
+              <label className="btn-outline flex cursor-pointer items-center justify-center gap-2"><Icon name="gallery" size={20} /> {file ? file.name : 'Joindre une photo'}<input type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => setFile(e.target.files?.[0] ?? null)} /></label>
             </>
           )}
           <ErrorBox>{err}</ErrorBox>

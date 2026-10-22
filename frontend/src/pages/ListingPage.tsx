@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import Icon from '../components/Icon'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { api, ApiError, fcfa, type Listing, type PublicUser } from '../api'
 import { useAuth } from '../auth'
@@ -8,7 +9,7 @@ import { Avatar, ErrorBox, Spinner } from '../components/ui'
 
 interface Review { id: number; rating: number; comment: string; listing: string; reviewer: PublicUser }
 
-function Stars({ n }: { n: number }) { return <span aria-label={`${n} sur 5`}>{'★'.repeat(n)}{'☆'.repeat(5 - n)}</span> }
+function Stars({ n }: { n: number }) { return <span className="inline-flex" role="img" aria-label={`${n} sur 5`}>{[1, 2, 3, 4, 5].map((i) => <Icon key={i} name="star" bold={i <= n} size={16} />)}</span> }
 
 export default function ListingPage() {
   const { id } = useParams()
@@ -53,10 +54,10 @@ export default function ListingPage() {
 
   return (
     <div className="space-y-4 pt-6">
-      <Link to="/marketplace" className="text-sm text-link">← Marketplace</Link>
+      <Link to="/marketplace" className="inline-flex items-center gap-1 text-sm font-semibold text-link"><Icon name="back" size={18} /> Marketplace</Link>
       <div>
         <div className="aspect-square overflow-hidden rounded-xl2 bg-soft">
-          {l.images[pic] ? <img src={l.images[pic].url} alt={l.title} className="h-full w-full object-cover" /> : <div className="grid h-full place-items-center text-5xl">🛍️</div>}
+          {l.images[pic] ? <img src={l.images[pic].url} alt={l.title} className="h-full w-full object-cover" /> : <div className="grid h-full place-items-center text-muted"><Icon name="shop" size={64} /></div>}
         </div>
         {l.images.length > 1 && (
           <div className="mt-2 flex gap-2 overflow-x-auto">
@@ -87,7 +88,7 @@ export default function ListingPage() {
         <Avatar user={l.seller} size={44} />
         <div className="flex-1">
           <p className="font-semibold">{l.seller.first_name} {l.seller.last_name}</p>
-          <p className="text-xs text-muted">{l.seller.rating.avg ? `★ ${l.seller.rating.avg} (${l.seller.rating.count} avis)` : 'Pas encore d\'avis'} · {l.seller.sales} vente{l.seller.sales > 1 ? 's' : ''}</p>
+          <p className="text-xs text-muted">{l.seller.rating.avg ? `${l.seller.rating.avg}/5 (${l.seller.rating.count} avis)` : 'Pas encore d\'avis'} · {l.seller.sales} vente{l.seller.sales > 1 ? 's' : ''}</p>
         </div>
       </Link>
 
@@ -97,7 +98,7 @@ export default function ListingPage() {
         <div className="space-y-2">
           <div className="flex gap-2">
             <button className="btn" onClick={contact}>Contacter le vendeur</button>
-            <button className="btn-outline !w-auto px-4" onClick={() => run(() => api(`/listings/${l.id}/favorite/`, { method: 'POST' }))} aria-label="Favoris">{l.favorited ? '♥' : '♡'}</button>
+            <button className="btn-outline !w-auto px-4" onClick={() => run(() => api(`/listings/${l.id}/favorite/`, { method: 'POST' }))} aria-label="Favoris"><Icon name="heart" bold={l.favorited} size={22} className={l.favorited ? 'text-danger' : ''} /></button>
           </div>
           {l.my_offer ? (
             <p className="card p-3 text-sm">Ton offre : <b>{fcfa(l.my_offer.amount)}</b> — {({ pending: 'en attente', countered: `contre-proposition ${fcfa(l.my_offer.counter_amount ?? 0)}`, accepted: 'acceptée !' } as Record<string, string>)[l.my_offer.status]}
@@ -117,7 +118,7 @@ export default function ListingPage() {
       {!mine && l.bought_by_me && !reviews.some((r) => r.listing === l.title && r.reviewer.id === user.id) && (
         <section className="card space-y-2 p-4">
           <h2 className="font-semibold">Laisser un avis vérifié</h2>
-          <div className="flex gap-1 text-2xl text-link">{[1, 2, 3, 4, 5].map((n) => <button key={n} onClick={() => setRating(n)} aria-label={`${n} étoiles`}>{n <= rating ? '★' : '☆'}</button>)}</div>
+          <div className="flex gap-1 text-2xl text-link">{[1, 2, 3, 4, 5].map((n) => <button key={n} onClick={() => setRating(n)} aria-label={`${n} étoiles`}><Icon name="star" bold={n <= rating} size={30} /></button>)}</div>
           <input className="field" placeholder="Commentaire (facultatif)" maxLength={500} value={comment} onChange={(e) => setComment(e.target.value)} />
           <button className="btn" onClick={() => run(() => api(`/listings/${l.id}/reviews/`, { body: { rating, comment } }))}>Publier l'avis</button>
         </section>

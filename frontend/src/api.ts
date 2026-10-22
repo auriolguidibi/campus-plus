@@ -1,8 +1,12 @@
 const TOKEN_KEY = 'campus-token'
 
-export const getToken = () => { try { return localStorage.getItem(TOKEN_KEY) } catch { return null } }
-export const setToken = (t: string | null) => {
-  try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY) } catch { /* storage blocked */ }
+// "Se souvenir de moi" => localStorage (survives closing the browser); otherwise sessionStorage (ends with the tab).
+export const getToken = () => { try { return localStorage.getItem(TOKEN_KEY) ?? sessionStorage.getItem(TOKEN_KEY) } catch { return null } }
+export const setToken = (t: string | null, remember = true) => {
+  try {
+    localStorage.removeItem(TOKEN_KEY); sessionStorage.removeItem(TOKEN_KEY)
+    if (t) (remember ? localStorage : sessionStorage).setItem(TOKEN_KEY, t)
+  } catch { /* storage blocked */ }
 }
 
 export class ApiError extends Error {
@@ -71,7 +75,10 @@ export interface Listing {
   condition: 'new' | 'used'; quantity: number; location: string; handover: string[]; negotiable: boolean
   status: ListingStatus; images: { id: number; url: string }[]; favorited: boolean; my_offer: Offer | null; bought_by_me: boolean; created_at: string
 }
-export interface ChatMessage { id: number; sender: number | null; text: string; is_system: boolean; created_at: string }
+export interface ChatMessage {
+  id: number; sender: number | null; text: string; is_system: boolean; kind: 'text' | 'system' | 'voice'
+  audio_url: string | null; audio_seconds: number | null; created_at: string
+}
 export interface ConversationSummary {
   id: number; other: PublicUser; listing: { id: number; title: string } | null
   last_message: ChatMessage | null; unread: number; updated_at: string

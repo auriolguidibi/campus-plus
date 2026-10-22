@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import Icons from 'unplugin-icons/vite'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), Icons({ compiler: 'jsx', jsx: 'react' })],
   server: { proxy: { '/api': 'http://127.0.0.1:8000', '/media': 'http://127.0.0.1:8000' } },
 })

@@ -129,7 +129,7 @@ class VerifyUserView(APIView):
         old, u.verification = u.verification, decision
         u.save(update_fields=['verification'])
         log(request, 'user.verification', 'user', u.id, old=old, new=decision)
-        notify(u, 'system', 'Ton compte a été vérifié 🎉' if decision == 'verified' else "La vérification de ton compte a été refusée.", '/profil')
+        notify(u, 'system', 'Ton compte a été vérifié' if decision == 'verified' else "La vérification de ton compte a été refusée.", '/profil')
         return Response({'verification': decision})
 
 

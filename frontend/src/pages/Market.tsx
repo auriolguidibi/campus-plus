@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import Banner from '../components/Banner'
+import Icon from '../components/Icon'
 import { Link } from 'react-router-dom'
 import { api, type Category, type Listing, type Page, type Seller } from '../api'
 import ListingCard from '../components/ListingCard'
@@ -51,10 +53,8 @@ export default function Market() {
   const filtered = query !== ''
   return (
     <div className="space-y-4 pt-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Marketplace</h1>
-        <Link to="/marketplace/mes-annonces" className="text-sm font-semibold text-link">Mon espace</Link>
-      </div>
+      <Banner title="Marketplace" subtitle="Achète et vends entre étudiants" icon="shop"
+        action={<Link to="/marketplace/mes-annonces" className="rounded-full bg-white/20 px-3 py-1.5 text-xs font-semibold">Mon espace</Link>} />
       <div className="flex gap-2">
         <input className="field" placeholder="Rechercher un produit, service…" value={q} onChange={(e) => setQ(e.target.value)} />
         <button onClick={() => setShowFilters(!showFilters)} aria-expanded={showFilters} className="rounded-xl border border-line bg-soft px-4 text-sm font-semibold">Filtres</button>
@@ -82,7 +82,7 @@ export default function Market() {
         <section className="space-y-3">
           {hl.deals.length > 0 && (
             <>
-              <h2 className="font-semibold">Bons plans du campus ⚡</h2>
+              <h2 className="flex items-center gap-1.5 font-semibold">Bons plans du campus <Icon name="fire" bold size={18} className="text-amber-500" /></h2>
               <div className="-mx-4 flex gap-3 overflow-x-auto px-4">
                 {hl.deals.map((l) => <div key={l.id} className="w-40 shrink-0"><ListingCard l={l} /></div>)}
               </div>
@@ -95,7 +95,7 @@ export default function Market() {
                 <p className="text-xs text-muted">Vendeur de la semaine</p>
                 <p className="font-semibold">{hl.seller_of_week.first_name} {hl.seller_of_week.last_name}</p>
               </div>
-              <span className="text-sm">{hl.seller_of_week.rating.avg ? `★ ${hl.seller_of_week.rating.avg}` : 'Nouveau'}</span>
+              <span className="text-sm">{hl.seller_of_week.rating.avg ? <span className="flex items-center gap-1"><Icon name="star" bold size={16} className="text-amber-500" />{hl.seller_of_week.rating.avg}</span> : 'Nouveau'}</span>
             </Link>
           )}
           <h2 className="font-semibold">Toutes les annonces</h2>
@@ -108,7 +108,7 @@ export default function Market() {
       {!loading && !err && items.length === 0 && <p className="py-10 text-center text-sm text-muted">{filtered ? 'Aucun résultat pour ces filtres.' : "Aucune annonce pour l'instant. Sois le premier à vendre !"}</p>}
       {next && !loading && <button className="btn-outline" onClick={() => load(next, false)}>Voir plus</button>}
       <Link to="/marketplace/nouveau" aria-label="Vendre un article"
-        className="fixed bottom-24 right-4 z-10 rounded-full bg-accent px-5 py-3 text-sm font-bold text-bg shadow-lg">+ Vendre</Link>
+        className="fixed bottom-24 right-4 z-10 flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-bg shadow-lg"><Icon name="add2" bold size={20} /> Vendre</Link>
     </div>
   )
 }

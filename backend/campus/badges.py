@@ -30,4 +30,4 @@ def check_badges(user):
             if badge:
                 _, created = UserBadge.objects.get_or_create(user=user, badge=badge)
                 if created:
-                    notify(user, 'challenges', f'Nouveau badge : {badge.icon} {badge.name}', '/classement')
+                    notify(user, 'challenges', f'Nouveau badge : {badge.name}', '/classement')

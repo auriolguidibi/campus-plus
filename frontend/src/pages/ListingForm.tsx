@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { api, ApiError, type Category, type Listing } from '../api'
+import Icon from '../components/Icon'
+import { Check, Field, SelectField, Submit, TextArea } from '../components/form'
 import { ErrorBox, Spinner } from '../components/ui'
 
 const MAX = 6
@@ -55,45 +57,43 @@ export default function ListingForm() {
   return (
     <form onSubmit={submit} className="space-y-3 pt-6">
       <h1 className="text-2xl font-bold">{id ? "Modifier l'annonce" : 'Vendre un article'}</h1>
-      <input name="title" className="field" placeholder="Nom du produit" maxLength={120} defaultValue={v?.title} required />
-      <textarea name="description" className="field min-h-28" placeholder="Description" maxLength={3000} defaultValue={v?.description} required />
-      <select name="category" className="field" defaultValue={v?.category.id ?? ''} required>
-        <option value="" disabled>Catégorie</option>
+      <Field name="title" label="Nom du produit" icon="tag" maxLength={120} defaultValue={v?.title} placeholder="Ex. Nike Air Force 1" required />
+      <TextArea name="description" label="Description" icon="notebook" maxLength={3000} defaultValue={v?.description} placeholder="État, accessoires, raison de la vente…" required />
+      <SelectField name="category" label="Catégorie" icon="bag" defaultValue={v?.category.id ?? ''} required>
+        <option value="" disabled>Choisir une catégorie</option>
         {cats.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-      </select>
-      <div className="grid grid-cols-2 gap-2">
-        <input name="price" className="field" inputMode="numeric" pattern="[0-9]*" placeholder="Prix (FCFA)" defaultValue={v?.price} required />
-        <input name="quantity" className="field" type="number" min={1} max={999} placeholder="Quantité" defaultValue={v?.quantity ?? 1} required />
+      </SelectField>
+      <div className="grid grid-cols-2 gap-3">
+        <Field name="price" label="Prix (FCFA)" icon="dollar" inputMode="numeric" pattern="[0-9]*" defaultValue={v?.price} placeholder="25000" required />
+        <Field name="quantity" label="Quantité" type="number" min={1} max={999} defaultValue={v?.quantity ?? 1} required />
       </div>
-      <select name="condition" className="field" defaultValue={v?.condition ?? 'used'}>
+      <SelectField name="condition" label="État" icon="verified" defaultValue={v?.condition ?? 'used'}>
         <option value="used">Occasion</option><option value="new">Neuf</option>
-      </select>
-      <input name="location" className="field" placeholder="Lieu de rencontre / zone (ex. Campus EIG)" maxLength={120} defaultValue={v?.location} />
-      <fieldset className="card space-y-2 p-3">
-        <legend className="px-1 text-xs text-muted">Modes de remise</legend>
+      </SelectField>
+      <Field name="location" label="Lieu de rencontre / zone" icon="pin" maxLength={120} defaultValue={v?.location} placeholder="Campus EIG, bloc A" />
+      <fieldset className="card space-y-3 p-4">
+        <legend className="px-1 text-xs font-semibold text-muted">Modes de remise</legend>
         {HANDOVER.map(([k, label]) => (
-          <label key={k} className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={handover.includes(k)} onChange={(e) => setHandover(e.target.checked ? [...handover, k] : handover.filter((h) => h !== k))} /> {label}
-          </label>
+          <Check key={k} checked={handover.includes(k)} onChange={(e) => setHandover(e.target.checked ? [...handover, k] : handover.filter((h) => h !== k))}>{label}</Check>
         ))}
-        <label className="flex items-center gap-2 border-t border-line pt-2 text-sm"><input type="checkbox" name="negotiable" defaultChecked={v?.negotiable} /> Prix négociable (accepter les offres)</label>
+        <div className="border-t border-line pt-3"><Check name="negotiable" defaultChecked={v?.negotiable}>Prix négociable (accepter les offres)</Check></div>
       </fieldset>
 
       <div className="grid grid-cols-3 gap-2">
         {kept.map((i) => (
           <div key={i.id} className="relative"><img src={i.url} alt="" className="aspect-square w-full rounded-lg object-cover" />
-            <button type="button" aria-label="Retirer la photo" onClick={() => setRemoved([...removed, i.id])} className="absolute right-1 top-1 h-6 w-6 rounded-full bg-fg/70 text-xs text-bg">✕</button></div>
+            <button type="button" aria-label="Retirer la photo" onClick={() => setRemoved([...removed, i.id])} className="absolute right-1 top-1 h-6 w-6 rounded-full bg-fg/70 text-xs text-bg"><Icon name="close" bold size={16} /></button></div>
         ))}
         {previews.map((u, i) => (
           <div key={u} className="relative"><img src={u} alt="" className="aspect-square w-full rounded-lg object-cover" />
-            <button type="button" aria-label="Retirer la photo" onClick={() => setFiles(files.filter((_, j) => j !== i))} className="absolute right-1 top-1 h-6 w-6 rounded-full bg-fg/70 text-xs text-bg">✕</button></div>
+            <button type="button" aria-label="Retirer la photo" onClick={() => setFiles(files.filter((_, j) => j !== i))} className="absolute right-1 top-1 h-6 w-6 rounded-full bg-fg/70 text-xs text-bg"><Icon name="close" bold size={16} /></button></div>
         ))}
       </div>
-      <label className="btn-outline block cursor-pointer text-center">📷 Ajouter des photos ({kept.length + files.length}/{MAX})
+      <label className="btn-outline flex cursor-pointer items-center justify-center gap-2"><Icon name="gallery" size={20} /> Ajouter des photos ({kept.length + files.length}/{MAX})
         <input type="file" accept="image/jpeg,image/png,image/webp" multiple hidden onChange={(e) => { pick(e.target.files); e.target.value = '' }} />
       </label>
       <ErrorBox>{err}</ErrorBox>
-      <button className="btn" disabled={busy}>{busy ? 'Envoi…' : id ? 'Enregistrer' : 'Publier'}</button>
+      <Submit busy={busy} icon="send">{id ? 'Enregistrer' : 'Publier'}</Submit>
       {!id && <button data-draft="1" className="w-full py-2 text-sm text-muted" disabled={busy}>Enregistrer comme brouillon</button>}
     </form>
   )

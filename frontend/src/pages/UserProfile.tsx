@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import Icon from '../components/Icon'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { api, type Profile, type Relation } from '../api'
 import PostList from '../components/PostList'
@@ -40,7 +41,7 @@ export default function UserProfile() {
 
   return (
     <div className="space-y-5 pt-6">
-      <button onClick={() => nav(-1)} className="text-sm text-link">← Retour</button>
+      <button onClick={() => nav(-1)} className="inline-flex items-center gap-1 text-sm font-semibold text-link"><Icon name="back" size={18} /> Retour</button>
       <section className="flex items-center gap-4">
         <Avatar user={p} size={72} />
         <div>

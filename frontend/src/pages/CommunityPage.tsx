@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import Icon from '../components/Icon'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { api, type Community, type Member, type Role } from '../api'
 import PostList from '../components/PostList'
@@ -44,7 +45,7 @@ export default function CommunityPage() {
 
   return (
     <div className="space-y-4 pt-6">
-      <Link to="/communautes" className="text-sm text-link">← Communautés</Link>
+      <Link to="/communautes" className="inline-flex items-center gap-1 text-sm font-semibold text-link"><Icon name="back" size={18} /> Communautés</Link>
       <header>
         <h1 className="text-2xl font-bold">{c.name}</h1>
         <p className="text-sm text-muted">{CATEGORIES[c.category]} · {c.member_count} membre{c.member_count > 1 ? 's' : ''}</p>

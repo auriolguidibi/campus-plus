@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import Icon from './Icon'
 import { api, ApiError, type PublicUser, type StoryGroup } from '../api'
 import { useAuth } from '../auth'
 import { Avatar, ErrorBox, timeAgo } from './ui'
@@ -42,7 +43,7 @@ function Viewer({ group, onClose, onSeen }: { group: StoryGroup; onClose: () => 
       <div className="flex items-center gap-2 px-3 py-2">
         <Avatar user={group.author} size={32} />
         <div className="flex-1 text-sm"><b>{group.author.first_name}</b> <span className="text-white/70">{timeAgo(s.created_at)} · {remaining(s.expires_at)}</span></div>
-        <button onClick={onClose} aria-label="Fermer" className="px-2 text-2xl">✕</button>
+        <button onClick={onClose} aria-label="Fermer" className="px-2"><Icon name="close" size={28} /></button>
       </div>
       <button className="relative min-h-0 flex-1" onClick={next} aria-label="Story suivante">
         <img src={s.url} alt="" className="h-full w-full object-contain" />
@@ -51,8 +52,8 @@ function Viewer({ group, onClose, onSeen }: { group: StoryGroup; onClose: () => 
       {mine && (
         <div className="space-y-2 bg-black/80 p-3 text-sm">
           {viewers === null
-            ? <button onClick={async () => setViewers(await api<PublicUser[]>(`/stories/${s.id}/viewers/`))}>👁 Voir les spectateurs</button>
-            : <p>👁 {viewers.length} spectateur{viewers.length > 1 ? 's' : ''}{viewers.length > 0 && ' : ' + viewers.map((v) => '@' + v.username).join(', ')}</p>}
+            ? <button onClick={async () => setViewers(await api<PublicUser[]>(`/stories/${s.id}/viewers/`))}className="flex items-center gap-2"><Icon name="eye" size={18} /> Voir les spectateurs</button>
+            : <p className="flex items-center gap-2"><Icon name="eye" size={18} /> {viewers.length} spectateur{viewers.length > 1 ? 's' : ''}{viewers.length > 0 && ' : ' + viewers.map((v) => '@' + v.username).join(', ')}</p>}
           <div className="flex items-center gap-3">
             <select aria-label="Visibilité" value={s.visibility} onChange={(e) => setVisibility(e.target.value)} className="rounded-lg bg-white/15 px-2 py-1">
               <option value="everyone">Tout le campus</option><option value="friends">Amis uniquement</option>

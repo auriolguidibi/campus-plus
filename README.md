@@ -1,4 +1,4 @@
-# Campus+
+﻿# Campus+
 
 Réseau social étudiant. Frontend React + TypeScript + Tailwind (Vite), backend Django REST (SQLite en dev, MySQL via `DB_ENGINE=mysql`).
 
@@ -10,7 +10,7 @@ cd backend && python -m venv .venv && .venv/Scripts/pip install -r requirements.
 cd frontend && npm install && npm run dev   # http://localhost:5190 (proxy /api -> :8000)
 ```
 
-Tests backend : `python manage.py test` (43 tests, dont `config/test_journey.py`, un parcours complet de bout en bout). Déploiement : voir `DEPLOYMENT.md` et `backend/.env.example`. Code d'invitation de dev : `CAMPUS2026` (variable `CAMPUS_INVITE_CODES`).
+Tests backend : `python manage.py test` (47 tests, dont `config/test_journey.py`, un parcours complet de bout en bout). Déploiement : voir `DEPLOYMENT.md` et `backend/.env.example`. Code d'invitation de dev : `CAMPUS2026` (variable `CAMPUS_INVITE_CODES`).
 
 ## État (Phase 1-3 partielles)
 
@@ -61,3 +61,10 @@ Pas encore fait : notifications push, invitations/annonces de groupe (fonctionna
   séparé de `bg-primary`, accent et danger assombris en mode clair, badges lisibles en mode sombre).
 - Production simulée (waitress, `DJANGO_DEBUG=0`) : application React + API servies par un seul processus, routes profondes,
   médias, en-têtes de sécurité. MySQL, gunicorn/nginx/HTTPS et SMTP n'ont pas pu être testés (voir `DEPLOYMENT.md`).
+
+## Refonte du design, appels et notes vocales
+
+- Formulaires refaits (composants `Field`, `SelectField`, `TextArea`, `Check`, `Submit`) : icônes intégrées, libellés, états d'erreur, affichage du mot de passe, jauge de robustesse ; inscription en 3 étapes avec validation par étape ; « Se souvenir de moi » réel (localStorage ou sessionStorage).
+- Icônes : Iconify (jeu Solar) intégrées à la compilation via `unplugin-icons`, sans appel réseau au runtime ; les emojis d'interface ont été remplacés.
+- Images : fond photo de l'écran de bienvenue et des écrans de connexion, bannières de rubriques, couverture par défaut des événements. Crédits : « Campus hustle » (Marksllan) et « Tugwell Hall » (Olga Ernst), Wikimedia Commons, CC BY-SA 4.0.
+- Messagerie : notes vocales (enregistrement navigateur, 120 s max, contenu vérifié côté serveur), appels audio et vidéo WebRTC pair-à-pair avec signalisation par l'API (sonnerie, répondre/refuser, micro, caméra, historique d'appels dans la conversation). Un relais TURN (`CALL_TURN_*`) est nécessaire derrière certains réseaux (4G, pare-feu stricts).

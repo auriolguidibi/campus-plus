@@ -276,7 +276,7 @@ class ListingViewSet(viewsets.ModelViewSet):
         with transaction.atomic():
             conv = get_or_create_conversation(request.user, listing.seller, listing)
             offer = Offer.objects.create(listing=listing, buyer=request.user, conversation=conv, amount=amount)
-            post_message(conv, request.user, f'💰 Offre : {fcfa(amount)} (prix demandé {fcfa(listing.price)})', system=True)
+            post_message(conv, request.user, f'Offre : {fcfa(amount)} (prix demandé {fcfa(listing.price)})', system=True)
         return Response(OfferSerializer(offer).data, status=201)
 
     @action(detail=True, methods=['get', 'post'])
@@ -314,9 +314,9 @@ class OfferActionView(APIView):
             if not (seller or buyer):
                 return Response({'detail': 'Introuvable.'}, status=404)
             if seller and act == 'accept' and o.status == S.PENDING:
-                o.status, note = S.ACCEPTED, f'✅ Offre de {fcfa(o.amount)} acceptée.'
+                o.status, note = S.ACCEPTED, f'Offre de {fcfa(o.amount)} acceptée.'
             elif seller and act == 'decline' and o.status == S.PENDING:
-                o.status, note = S.DECLINED, '❌ Offre refusée.'
+                o.status, note = S.DECLINED, 'Offre refusée.'
             elif seller and act == 'counter' and o.status == S.PENDING:
                 try:
                     c = int(request.data.get('amount'))
@@ -324,10 +324,10 @@ class OfferActionView(APIView):
                     return Response({'amount': 'Montant invalide.'}, status=400)
                 if not o.amount < c <= listing.price:
                     return Response({'amount': "La contre-proposition doit être entre l'offre et le prix demandé."}, status=400)
-                o.status, o.counter_amount, note = S.COUNTERED, c, f'🔁 Contre-proposition : {fcfa(c)}.'
+                o.status, o.counter_amount, note = S.COUNTERED, c, f'Contre-proposition : {fcfa(c)}.'
             elif buyer and act == 'accept-counter' and o.status == S.COUNTERED:
                 o.status, o.amount = S.ACCEPTED, o.counter_amount
-                note = f'✅ Contre-proposition acceptée : {fcfa(o.counter_amount)}.'
+                note = f'Contre-proposition acceptée : {fcfa(o.counter_amount)}.'
             elif buyer and act in ('withdraw', 'decline') and o.status in (S.PENDING, S.COUNTERED):
                 o.status, note = S.WITHDRAWN, 'Offre retirée.'
             else:

@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { api, ApiError, type Community, type Page } from '../api'
+import Icon from '../components/Icon'
+import { SelectField, Submit, TextArea } from '../components/form'
 import { ErrorBox } from '../components/ui'
 
 const MAX = 4
@@ -21,7 +23,7 @@ export default function Create() {
 
   function pick(list: FileList | null) {
     const next = [...files, ...Array.from(list ?? [])]
-    if (next.length > MAX) setErr(`${MAX} photos maximum.`); else setErr('')
+    setErr(next.length > MAX ? `${MAX} photos maximum.` : '')
     setFiles(next.slice(0, MAX))
   }
 
@@ -38,31 +40,30 @@ export default function Create() {
   }
 
   return (
-    <form onSubmit={submit} className="space-y-3 pt-6">
+    <form onSubmit={submit} className="space-y-4 pt-6">
       <h1 className="text-2xl font-bold">Nouvelle publication</h1>
-      <select className="field" value={community} onChange={(e) => setCommunity(e.target.value)} aria-label="Destination">
-        <option value="">Sur mon profil (amis)</option>
+      <SelectField label="Publier dans" icon="users" value={community} onChange={(e) => setCommunity(e.target.value)}>
+        <option value="">Sur mon profil (mes amis)</option>
         {groups.map((g) => <option key={g.id} value={g.id}>{g.name}</option>)}
-      </select>
-      <textarea className="field min-h-32" maxLength={2000} value={text} onChange={(e) => setText(e.target.value)} placeholder="Quoi de neuf sur le campus ?" />
+      </SelectField>
+      <TextArea label="Ton message" icon="edit" maxLength={2000} value={text} onChange={(e) => setText(e.target.value)} placeholder="Quoi de neuf sur le campus ?" />
       {previews.length > 0 && (
         <div className="grid grid-cols-4 gap-2">
           {previews.map((u, i) => (
             <div key={u} className="relative">
-              <img src={u} alt="" className="aspect-square w-full rounded-lg object-cover" />
+              <img src={u} alt="" className="aspect-square w-full rounded-xl object-cover" />
               <button type="button" aria-label="Retirer la photo" onClick={() => setFiles(files.filter((_, j) => j !== i))}
-                className="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-fg/70 text-xs text-bg">✕</button>
+                className="absolute right-1 top-1 grid h-6 w-6 place-items-center rounded-full bg-fg/70 text-bg"><Icon name="close" bold size={16} /></button>
             </div>
           ))}
         </div>
       )}
-      <label className="btn-outline block cursor-pointer text-center">
-        📷 Ajouter des photos ({files.length}/{MAX})
+      <label className="btn-outline flex cursor-pointer items-center justify-center gap-2">
+        <Icon name="gallery" size={20} /> Ajouter des photos ({files.length}/{MAX})
         <input type="file" accept="image/jpeg,image/png,image/webp" multiple hidden onChange={(e) => { pick(e.target.files); e.target.value = '' }} />
       </label>
-      <p className="text-right text-xs text-muted">{text.length}/2000 · Vidéos et sondages : plus tard.</p>
       <ErrorBox>{err}</ErrorBox>
-      <button className="btn" disabled={busy || (!text.trim() && !files.length)}>{busy ? 'Envoi en cours…' : 'Publier'}</button>
+      <Submit busy={busy} disabled={!text.trim() && !files.length} icon="send">Publier</Submit>
     </form>
   )
 }

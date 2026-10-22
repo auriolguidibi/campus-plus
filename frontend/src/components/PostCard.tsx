@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import Icon from './Icon'
 import { Link } from 'react-router-dom'
 import { api, type Comment, type Post } from '../api'
 import { useAuth } from '../auth'
@@ -99,11 +100,11 @@ export default function PostCard({ post, onChange, onRemove }: { post: Post; onC
       {post.text && <p className="mt-3 whitespace-pre-wrap break-words text-sm">{post.text}</p>}
       <MediaGrid urls={post.media} />
       <footer className="mt-3 flex items-center gap-5 text-sm text-muted">
-        <button onClick={() => toggle('react')} className={post.reacted ? 'font-semibold text-link' : ''}>♥ {post.reaction_count}</button>
-        <button onClick={() => setOpen(!open)}>💬 {post.comment_count}</button>
+        <button onClick={() => toggle('react')} className={`flex items-center gap-1.5 ${post.reacted ? 'font-semibold text-danger' : ''}`}><Icon name="heart" bold={post.reacted} size={20} /> {post.reaction_count}</button>
+        <button onClick={() => setOpen(!open)} className="flex items-center gap-1.5"><Icon name="chatLine" size={20} /> {post.comment_count}</button>
         {!mine && <ReportButton type="post" id={post.id} />}
-        <button onClick={() => toggle('favorite')} className={`ml-auto ${post.favorited ? 'font-semibold text-accent' : ''}`}>
-          {post.favorited ? '★ Enregistré' : '☆ Enregistrer'}
+        <button onClick={() => toggle('favorite')} className={`ml-auto flex items-center gap-1.5 ${post.favorited ? 'font-semibold text-accent' : ''}`}>
+          <Icon name="bookmark" bold={post.favorited} size={20} /> {post.favorited ? 'Enregistré' : 'Enregistrer'}
         </button>
       </footer>
       {open && <Comments post={post} onCount={(n) => onChange({ ...post, comment_count: n })} />}

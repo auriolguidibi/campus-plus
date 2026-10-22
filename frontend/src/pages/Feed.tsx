@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Icon from '../components/Icon'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../auth'
 import Bell from '../components/Bell'
@@ -16,11 +17,11 @@ export default function Feed() {
     <div className="pt-4">
       <div className="mb-4 flex items-center justify-between">
         <Logo size={30} />
-        <div className="flex items-center gap-2"><Link to="/amis" className="text-sm font-semibold text-link">Amis</Link><Bell /></div>
+        <div className="flex items-center gap-2"><Link to="/amis" aria-label="Amis" className="px-2"><Icon name="users" size={24} /></Link><Bell /></div>
       </div>
       <nav aria-label="Rubriques" className="mb-4 grid grid-cols-5 gap-2 text-center text-[11px] font-medium">
-        {([['/marketplace', '🛍️', 'Marketplace'], ['/defis', '🏆', 'Défis'], ['/confessions', '💜', 'Confessions'], ['/evenements', '📅', 'Événements'], ['/classement', '📊', 'Classement']] as const).map(([to, icon, label]) => (
-          <Link key={to} to={to} className="card flex flex-col items-center gap-1 py-2"><span className="text-xl" aria-hidden>{icon}</span>{label}</Link>
+        {([['/marketplace', 'shop', 'Marketplace'], ['/defis', 'trophy', 'Défis'], ['/confessions', 'ghost', 'Confessions'], ['/evenements', 'calendar', 'Événements'], ['/classement', 'ranking', 'Classement']] as const).map(([to, icon, label]) => (
+          <Link key={to} to={to} className="card flex flex-col items-center gap-1.5 py-3"><span className="grid h-9 w-9 place-items-center rounded-xl bg-primary/10 text-link"><Icon name={icon} size={22} /></span>{label}</Link>
         ))}
       </nav>
       <Stories />

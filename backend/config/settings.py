@@ -126,7 +126,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'DEFAULT_THROTTLE_CLASSES': ['rest_framework.throttling.AnonRateThrottle', 'rest_framework.throttling.UserRateThrottle'],
     'DEFAULT_THROTTLE_RATES': {'anon': '60/min', 'user': '300/min', 'login': '5/min', 'register': '10/hour',
-                               'reset': '5/hour', 'report': '30/hour'},
+                               'reset': '5/hour', 'report': '30/hour', 'call_signal': '1200/min'},
 }
 
 # Campus verification: 'invite' (code), 'admin' (manual validation) or 'open'. Not tied to e-mail domains.
@@ -141,6 +141,13 @@ MARKET_FORBIDDEN_TERMS = ['arme à feu', 'drogue', 'cocaïne', 'cannabis', 'muni
 STORY_DURATION_HOURS = int(os.environ.get('STORY_DURATION_HOURS', '24'))
 # Confessions wait for moderator approval before appearing publicly.
 CONFESSIONS_PREMODERATION = os.environ.get('CONFESSIONS_PREMODERATION', '1') == '1'
+
+# --- Calls (WebRTC) ---
+# Media is peer-to-peer. STUN is enough for most networks; behind strict NAT/4G a TURN relay is needed (set CALL_TURN_*).
+CALL_STUN_URLS = os.environ.get('CALL_STUN_URLS', 'stun:stun.l.google.com:19302,stun:stun1.l.google.com:19302').split(',')
+CALL_TURN_URL = os.environ.get('CALL_TURN_URL', '')
+CALL_TURN_USERNAME = os.environ.get('CALL_TURN_USERNAME', '')
+CALL_TURN_CREDENTIAL = os.environ.get('CALL_TURN_CREDENTIAL', '')
 
 # --- Security hardening ---
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024    # non-file request bodies

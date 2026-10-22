@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import Icon from '../components/Icon'
 import { Link, Navigate } from 'react-router-dom'
 import { api, ApiError } from '../api'
 import { useAuth } from '../auth'
@@ -144,7 +145,7 @@ function Content() {
         <div key={c.id} className="card flex items-center gap-2 p-3 text-sm"><Link to={`/communautes/${c.id}`} className="flex-1">{c.name} <span className="text-xs text-muted">· {c.members} membres</span></Link>
           {user?.staff_role === 'admin' && <button className="text-xs text-danger" onClick={() => delComm(c.id)}>Supprimer</button>}</div>
       ))}
-      <Link to="/confessions" className="card block p-3 text-sm font-semibold text-link">Modération des confessions →</Link>
+      <Link to="/confessions" className="card block p-3 text-sm font-semibold text-link"><span className="flex items-center justify-between">Modération des confessions <Icon name="next" size={18} /></span></Link>
     </div>
   )
 }

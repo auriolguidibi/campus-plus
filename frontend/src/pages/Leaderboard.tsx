@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
+import Icon from '../components/Icon'
 import { Link } from 'react-router-dom'
 import { api, type PublicUser } from '../api'
+import type { IconName } from '../icons'
 import { Avatar, Spinner, timeAgo } from '../components/ui'
 
 interface Board { criteria: string; entries: { rank: number; user?: PublicUser; label?: string; points: number }[]; me: { rank: number; points: number } | null }
 interface Badges { points: number; badges: { code: string; name: string; description: string; icon: string; earned_at: string | null }[] }
 interface Entry { id: number; points: number; reason: string; created_at: string }
+
+const BADGE_ICON: Record<string, IconName> = { verified: 'shield', 'first-post': 'edit', storyteller: 'camera', social: 'users', 'first-challenge': 'trophy', century: 'crown', seller: 'shop' }
 
 export default function Leaderboard() {
   const [period, setPeriod] = useState<'week' | 'all' | 'promotion'>('week')
@@ -31,7 +35,7 @@ export default function Leaderboard() {
             <div className="card divide-y divide-line px-3">
               {board.entries.map((e) => (
                 <div key={e.rank} className="flex items-center gap-3 py-2.5">
-                  <span className="w-6 text-center font-bold text-muted">{e.rank <= 3 ? ['🥇', '🥈', '🥉'][e.rank - 1] : e.rank}</span>
+                  <span className="w-6 text-center font-bold text-muted">{e.rank <= 3 ? <Icon name="crown" bold size={22} className={['text-amber-500', 'text-slate-400', 'text-orange-700'][e.rank - 1]} /> : e.rank}</span>
                   {e.user && <Avatar user={e.user} size={34} />}
                   <span className="flex-1 truncate text-sm font-semibold">{e.user ? `${e.user.first_name} ${e.user.last_name}` : e.label}</span>
                   <span className="text-sm font-bold text-link">{e.points} pts</span>
@@ -49,7 +53,7 @@ export default function Leaderboard() {
           <div className="grid grid-cols-2 gap-2">
             {badges.badges.map((b) => (
               <div key={b.code} className={`card p-3 text-center ${b.earned_at ? '' : 'opacity-50'}`}>
-                <div className="text-3xl" aria-hidden>{b.icon}</div>
+                <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-link"><Icon name={BADGE_ICON[b.code] ?? 'medal'} bold size={26} /></span>
                 <p className="text-sm font-semibold">{b.name}</p>
                 <p className="text-[11px] text-muted">{b.earned_at ? `Obtenu le ${new Date(b.earned_at).toLocaleDateString('fr-FR')}` : b.description}</p>
               </div>

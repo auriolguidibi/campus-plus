@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import Banner from '../components/Banner'
 import { Link, useNavigate } from 'react-router-dom'
 import { api, ApiError, type Community, type Page } from '../api'
+import { Field, SelectField, Submit, TextArea } from '../components/form'
 import { ErrorBox, Spinner } from '../components/ui'
 
 export const CATEGORIES: Record<string, string> = {
@@ -31,14 +33,14 @@ function NewCommunity({ onDone }: { onDone: () => void }) {
   }
   return (
     <form onSubmit={submit} className="card space-y-3 p-4">
-      <input name="name" className="field" placeholder="Nom de la communauté" maxLength={80} required />
-      <select name="category" className="field" defaultValue="interet">
+      <Field name="name" label="Nom de la communauté" icon="users" maxLength={80} placeholder="Club robotique" required />
+      <SelectField name="category" label="Catégorie" icon="tag" defaultValue="interet">
         {Object.entries(CATEGORIES).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-      </select>
-      <textarea name="description" className="field" placeholder="Description" maxLength={500} />
-      <textarea name="rules" className="field" placeholder="Règles de la communauté" maxLength={2000} />
+      </SelectField>
+      <TextArea name="description" label="Description" icon="notebook" maxLength={500} />
+      <TextArea name="rules" label="Règles de la communauté" icon="shield" maxLength={2000} />
       <ErrorBox>{err}</ErrorBox>
-      <button className="btn">Créer</button>
+      <Submit icon="add2">Créer la communauté</Submit>
     </form>
   )
 }
@@ -59,10 +61,8 @@ export default function Communities() {
 
   return (
     <div className="space-y-4 pt-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Communautés</h1>
-        <button className="text-sm font-semibold text-link" onClick={() => setCreating(!creating)}>{creating ? 'Fermer' : '+ Créer'}</button>
-      </div>
+      <Banner title="Communautés" subtitle="Filières, clubs, promos, projets" icon="users"
+        action={<button className="rounded-full bg-white/20 px-3 py-1.5 text-xs font-semibold" onClick={() => setCreating(!creating)}>{creating ? 'Fermer' : 'Créer'}</button>} />
       {creating && <NewCommunity onDone={() => setCreating(false)} />}
       <div className="grid grid-cols-2 gap-2 rounded-xl bg-soft p-1" role="tablist">
         {([['mine', 'Mes groupes'], ['discover', 'Découvrir']] as const).map(([v, l]) => (

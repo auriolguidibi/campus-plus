@@ -4,7 +4,7 @@ import { useTheme, type ThemeMode } from './theme'
 
 interface AuthCtx {
   user: User | null; loading: boolean
-  login: (login: string, password: string) => Promise<void>
+  login: (login: string, password: string, remember?: boolean) => Promise<void>
   register: (data: Record<string, string>) => Promise<void>
   logout: () => Promise<void>
   saveTheme: (m: ThemeMode) => void
@@ -18,7 +18,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(!!getToken())
 
-  const accept = (r: { token: string; user: User }) => { setToken(r.token); setUser(r.user); setMode(r.user.theme) }
+  const accept = (r: { token: string; user: User }, remember = true) => { setToken(r.token, remember); setUser(r.user); setMode(r.user.theme) }
 
   useEffect(() => {
     if (!getToken()) return
@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const value: AuthCtx = {
     user, loading,
-    login: async (login, password) => accept(await api('/auth/login/', { body: { login, password } })),
+    login: async (login, password, remember = true) => accept(await api('/auth/login/', { body: { login, password } }), remember),
     register: async (data) => accept(await api('/auth/register/', { body: data })),
     logout: async () => { await api('/auth/logout/', { method: 'POST' }).catch(() => {}); setToken(null); setUser(null) },
     // Theme applies instantly and is synced to the account when logged in.

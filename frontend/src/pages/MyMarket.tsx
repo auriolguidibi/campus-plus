@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import Icon from '../components/Icon'
 import { Link } from 'react-router-dom'
 import { api, fcfa, type Listing, type Offer, type Page } from '../api'
 import ListingCard from '../components/ListingCard'
@@ -56,7 +57,7 @@ export default function MyMarket() {
   const sold = (listings ?? []).filter((l) => l.status === 'sold')
   return (
     <div className="space-y-4 pt-6">
-      <Link to="/marketplace" className="text-sm text-link">← Marketplace</Link>
+      <Link to="/marketplace" className="inline-flex items-center gap-1 text-sm font-semibold text-link"><Icon name="back" size={18} /> Marketplace</Link>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Mon espace</h1>
         <Link to="/marketplace/nouveau" className="text-sm font-semibold text-link">+ Vendre</Link>

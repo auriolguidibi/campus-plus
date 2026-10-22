@@ -16,13 +16,13 @@ def get_or_create_conversation(a, b, listing=None):
     return conv
 
 
-def post_message(conv, sender, text, system=False):
+def post_message(conv, sender, text, system=False, audio=None, audio_seconds=None):
     conv.save(update_fields=['updated_at'])  # bump ordering
-    msg = Message.objects.create(conversation=conv, sender=sender, text=text, is_system=system)
+    msg = Message.objects.create(conversation=conv, sender=sender, text=text, is_system=system, audio=audio or '', audio_seconds=audio_seconds)
     who = sender.first_name or sender.username
     for m in conv.members.exclude(user=sender).select_related('user'):
         if system:  # offer events
             notify(m.user, 'market', text, f'/messages/{conv.id}', actor=sender)
         else:
-            notify(m.user, 'messages', f'Nouveau message de {who}', f'/messages/{conv.id}', actor=sender, key=f'conv:{conv.id}')
+            notify(m.user, 'messages', f'Note vocale de {who}' if audio else f'Nouveau message de {who}', f'/messages/{conv.id}', actor=sender, key=f'conv:{conv.id}')
     return msg
