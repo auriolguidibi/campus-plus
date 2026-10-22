@@ -12,5 +12,7 @@ urlpatterns = [
     path('api/', include('chat.urls')),
     path('api/', include('stories.urls')),
     path('api/', include('campus.urls')),
+    path('api/', include('moderation.urls')),
+    path('api/', include('notifications.urls')),
     path('api/', include('social.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

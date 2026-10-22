@@ -70,7 +70,10 @@ class MeView(APIView):
         return Response(ser.data)
 
     def delete(self, request):
-        request.user.delete()
+        # Re-authentication required; the account is anonymised (history of sales/messages must stay consistent).
+        if not request.user.check_password(str(request.data.get('password', ''))):
+            return Response({'password': 'Mot de passe incorrect.'}, status=400)
+        request.user.anonymize()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

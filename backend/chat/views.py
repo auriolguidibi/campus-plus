@@ -7,6 +7,7 @@ from accounts.models import User
 from accounts.relations import blocked_ids
 from accounts.serializers import PublicUserSerializer
 from market.models import Listing
+from notifications.services import mark_read_by_key
 
 from .models import Conversation, ConversationMember, Message
 from .services import get_or_create_conversation, post_message
@@ -70,6 +71,7 @@ class MessageListView(APIView):
         conv = my_conversation_or_404(request.user, pk)
         after = int(request.query_params.get('after', 0) or 0)
         msgs = list(conv.messages.filter(id__gt=after)[:200])
+        mark_read_by_key(request.user, f'conv:{conv.id}')
         if msgs:
             ConversationMember.objects.filter(conversation=conv, user=request.user).update(last_read_id=msgs[-1].id)
         return Response({'conversation': summary(conv, request.user), 'messages': MessageSerializer(msgs, many=True).data})

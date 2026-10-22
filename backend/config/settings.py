@@ -26,6 +26,8 @@ INSTALLED_APPS = [
     'chat',
     'stories',
     'campus',
+    'moderation',
+    'notifications',
 ]
 
 MIDDLEWARE = [
@@ -86,7 +88,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-    'DEFAULT_THROTTLE_RATES': {'login': '5/min', 'register': '10/hour', 'reset': '5/hour'},
+    'DEFAULT_THROTTLE_CLASSES': ['rest_framework.throttling.AnonRateThrottle', 'rest_framework.throttling.UserRateThrottle'],
+    'DEFAULT_THROTTLE_RATES': {'anon': '60/min', 'user': '300/min', 'login': '5/min', 'register': '10/hour',
+                               'reset': '5/hour', 'report': '30/hour'},
 }
 
 # Campus verification: 'invite' (code), 'admin' (manual validation) or 'open'. Not tied to e-mail domains.
@@ -101,3 +105,16 @@ MARKET_FORBIDDEN_TERMS = ['arme à feu', 'drogue', 'cocaïne', 'cannabis', 'muni
 STORY_DURATION_HOURS = int(os.environ.get('STORY_DURATION_HOURS', '24'))
 # Confessions wait for moderator approval before appearing publicly.
 CONFESSIONS_PREMODERATION = os.environ.get('CONFESSIONS_PREMODERATION', '1') == '1'
+
+# --- Security hardening ---
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024    # non-file request bodies
+FILE_UPLOAD_MAX_MEMORY_SIZE = 8 * 1024 * 1024
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_REFERRER_POLICY = 'same-origin'
+if not DEBUG:
+    SECURE_SSL_REDIRECT = os.environ.get('DJANGO_SSL_REDIRECT', '1') == '1'
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True

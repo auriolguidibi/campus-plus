@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { api, ApiError, fcfa, type Listing, type PublicUser } from '../api'
 import { useAuth } from '../auth'
 import { STATUS_LABEL } from '../components/ListingCard'
+import ReportButton from '../components/ReportButton'
 import { Avatar, ErrorBox, Spinner } from '../components/ui'
 
 interface Review { id: number; rating: number; comment: string; listing: string; reviewer: PublicUser }
@@ -112,6 +113,7 @@ export default function ListingPage() {
         </div>
       )}
       {!mine && !open && <p className="text-sm text-muted">Cette annonce n'est plus disponible.</p>}
+      {!mine && <ReportButton type="listing" id={l.id} label="Signaler cette annonce" />}
       {!mine && l.bought_by_me && !reviews.some((r) => r.listing === l.title && r.reviewer.id === user.id) && (
         <section className="card space-y-2 p-4">
           <h2 className="font-semibold">Laisser un avis vérifié</h2>
@@ -150,6 +152,7 @@ export default function ListingPage() {
             <div key={r.id} className="card p-3 text-sm">
               <p><b>{r.reviewer.first_name}</b> <span className="text-primary"><Stars n={r.rating} /></span> <span className="text-xs text-muted">· {r.listing}</span></p>
               {r.comment && <p className="mt-1">{r.comment}</p>}
+              {r.reviewer.id !== user.id && <ReportButton type="review" id={r.id} />}
             </div>
           ))}
         </section>

@@ -16,6 +16,7 @@ from accounts.models import User
 from accounts.relations import blocked_ids
 from accounts.serializers import PublicUserSerializer
 from chat.services import get_or_create_conversation, post_message
+from notifications.services import notify
 from social.views import process_image
 
 from .models import Category, Favorite, Listing, ListingImage, Offer, Review
@@ -229,6 +230,8 @@ class ListingViewSet(viewsets.ModelViewSet):
                 return Response({'buyer_id': "Cet acheteur n'a pas contacté le vendeur pour cette annonce."}, status=400)
         listing.status, listing.sold_to, listing.sold_at = Listing.Status.SOLD, buyer, timezone.now()
         listing.save(update_fields=['status', 'sold_to', 'sold_at'])
+        if buyer:
+            notify(buyer, 'market', f"« {listing.title} » t'a été vendu : tu peux laisser un avis vérifié.", f'/marketplace/{listing.id}', actor=request.user)
         return Response({'status': listing.status})
 
     @action(detail=True, methods=['get'])

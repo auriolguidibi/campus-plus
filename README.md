@@ -34,5 +34,22 @@ sur données réelles, confessions anonymes (pré-modération, filtre infos pers
 file de modération sans auteur). Les défis se créent via l'admin Django ou l'API (staff) ; `manage.py seed_campus
 --organizer <pseudo>` crée des défis/événements de démonstration. 20 tests backend.
 
-Pas encore fait : stories vidéo, défis collectifs, notifications push des rappels, signalement d'annonces, groupes de discussion, pièces jointes en messagerie, paiement mobile, vidéos, sondages, stories, photo de profil/couverture, annonces de groupe, Marketplace, messagerie temps réel, défis, confessions,
+Phase 6 : rôles étudiant/modérateur/administrateur (champ `role`, modifiable uniquement par un administrateur via
+l'API, journalisé), signalements utilisateurs (publications, commentaires, annonces, avis, utilisateurs) avec file de
+traitement, espace `/admin` (statistiques agrégées, signalements, annonces à modérer, vérification des comptes,
+suspension/réactivation, contenus, communautés, catégories, journal d'audit en lecture seule). Toute action sensible est
+journalisée (acteur, action, cible, IP, motif). Sécurité : toutes les routes privées testées (401 sans jeton), limitation
+de débit globale, suspension = jeton supprimé, suppression de compte avec mot de passe + anonymisation, en-têtes et cookies
+sécurisés quand `DJANGO_DEBUG=0` (HTTPS, HSTS). Compte admin : `manage.py createsuperuser` ou rôle via l'API/shell.
+
+Centre de notifications (`/notifications`, cloche sur le fil) : générées par de vrais événements (demandes d'amis,
+réactions/commentaires/réponses, messages, offres Marketplace, vente/refus/publication d'annonce, notation de défi, badges,
+changement de rôle dans un groupe, décisions de modération, rappels d'événements < 24 h). Préférences par catégorie
+(la catégorie « compte et modération » reste toujours active), regroupement des notifications non lues répétitives
+(messages, réactions), aucune notification pour ses propres actions ni entre utilisateurs bloqués, marquage lu
+individuel/global, messages marqués lus à l'ouverture de la conversation. Rafraîchissement par polling (20 s) ; pas de
+notification push. Les rappels d'événements sont générés à l'ouverture des notifications (pas de tâche planifiée).
+39 tests backend.
+
+Pas encore fait : notifications push, invitations/annonces de groupe (fonctionnalité inexistante), préférences de confidentialité détaillées, stories vidéo, défis collectifs, notifications push des rappels, signalement d'annonces, groupes de discussion, pièces jointes en messagerie, paiement mobile, vidéos, sondages, stories, photo de profil/couverture, annonces de groupe, Marketplace, messagerie temps réel, défis, confessions,
 événements, classements, notifications, administration (hors Django admin), push. Les onglets Communautés/Messages affichent « Pas encore disponible ».

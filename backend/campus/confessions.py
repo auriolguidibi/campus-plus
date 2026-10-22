@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from accounts.models import User
+from moderation.services import log
+from notifications.services import notify
 
 from .models import Confession, ConfessionComment, ConfessionReaction, ConfessionReport
 
@@ -134,7 +136,7 @@ class ConfessionReportView(APIView):
 
 class ModerationQueueView(APIView):
     def get(self, request):
-        if not request.user.is_staff:
+        if request.user.staff_role == 'user':
             raise PermissionDenied()
         rows = (Confession.objects.filter(status__in=[Confession.Status.PENDING, Confession.Status.FLAGGED])
                 .annotate(n_reports=Count('reports')).order_by('created_at'))
@@ -142,7 +144,7 @@ class ModerationQueueView(APIView):
                           'created_at': c.created_at} for c in rows])  # deliberately no author
 
     def post(self, request, pk):
-        if not request.user.is_staff:
+        if request.user.staff_role == 'user':
             raise PermissionDenied()
         c = get_object_or_404(Confession, pk=pk, status__in=[Confession.Status.PENDING, Confession.Status.FLAGGED])
         decision = request.data.get('decision')
@@ -153,6 +155,10 @@ class ModerationQueueView(APIView):
         c.status, c.moderated_by, c.moderated_at = mapping[decision], request.user, timezone.now()
         c.reject_reason = str(request.data.get('reason', ''))[:200] if decision != 'approve' else ''
         c.save()
+        log(request, f'confession.{decision}', 'confession', c.id, reason=c.reject_reason)  # never logs the author
+        msg = {'approve': 'Ta confession a été publiée.', 'reject': f'Ta confession a été refusée : {c.reject_reason}',
+               'remove': f'Ta confession a été supprimée : {c.reject_reason}'}[decision]
+        notify(c.author, 'system', msg, '/confessions')  # sent to the author only; nothing about it is public
         if decision == 'approve':
             c.reports.all().delete()  # reset after a moderator re-validated it
         return Response({'status': c.status})

@@ -1,5 +1,7 @@
 from django.db.models import Count
 
+from notifications.services import notify
+
 from .models import Conversation, ConversationMember, Message
 
 
@@ -16,4 +18,11 @@ def get_or_create_conversation(a, b, listing=None):
 
 def post_message(conv, sender, text, system=False):
     conv.save(update_fields=['updated_at'])  # bump ordering
-    return Message.objects.create(conversation=conv, sender=sender, text=text, is_system=system)
+    msg = Message.objects.create(conversation=conv, sender=sender, text=text, is_system=system)
+    who = sender.first_name or sender.username
+    for m in conv.members.exclude(user=sender).select_related('user'):
+        if system:  # offer events
+            notify(m.user, 'market', text, f'/messages/{conv.id}', actor=sender)
+        else:
+            notify(m.user, 'messages', f'Nouveau message de {who}', f'/messages/{conv.id}', actor=sender, key=f'conv:{conv.id}')
+    return msg

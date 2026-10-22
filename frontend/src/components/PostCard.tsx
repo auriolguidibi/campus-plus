@@ -2,9 +2,11 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { api, type Comment, type Post } from '../api'
 import { useAuth } from '../auth'
+import ReportButton from './ReportButton'
 import { Avatar, ErrorBox, Spinner, timeAgo } from './ui'
 
 function Comments({ post, onCount }: { post: Post; onCount: (n: number) => void }) {
+  const { user: me } = useAuth()
   const [items, setItems] = useState<Comment[] | null>(null)
   const [text, setText] = useState('')
   const [replyTo, setReplyTo] = useState<Comment | null>(null)
@@ -32,6 +34,7 @@ function Comments({ post, onCount }: { post: Post; onCount: (n: number) => void 
           <span className="text-xs text-muted">{timeAgo(c.created_at)}</span>
           <p className="whitespace-pre-wrap break-words">{c.text}</p>
           {!nested && <button className="text-xs font-semibold text-primary" onClick={() => setReplyTo(c)}>Répondre</button>}
+          {c.author.id !== me?.id && <span className="ml-3"><ReportButton type="comment" id={c.id} /></span>}
         </div>
       </div>
       {(items ?? []).filter((r) => r.parent === c.id).map((r) => row(r, true))}
@@ -98,6 +101,7 @@ export default function PostCard({ post, onChange, onRemove }: { post: Post; onC
       <footer className="mt-3 flex items-center gap-5 text-sm text-muted">
         <button onClick={() => toggle('react')} className={post.reacted ? 'font-semibold text-primary' : ''}>♥ {post.reaction_count}</button>
         <button onClick={() => setOpen(!open)}>💬 {post.comment_count}</button>
+        {!mine && <ReportButton type="post" id={post.id} />}
         <button onClick={() => toggle('favorite')} className={`ml-auto ${post.favorited ? 'font-semibold text-accent' : ''}`}>
           {post.favorited ? '★ Enregistré' : '☆ Enregistrer'}
         </button>

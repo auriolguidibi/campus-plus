@@ -103,5 +103,6 @@ class EventViewSet(viewsets.ModelViewSet):
             return Response({'detail': 'Cet événement est terminé.'}, status=400)
         obj, _ = EventRsvp.objects.get_or_create(event=ev, user=request.user)
         obj.reminder = not obj.reminder
-        obj.save(update_fields=['reminder'])
+        obj.reminded = False
+        obj.save(update_fields=['reminder', 'reminded'])
         return Response({'reminder': obj.reminder})

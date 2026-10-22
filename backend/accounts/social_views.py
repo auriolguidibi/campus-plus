@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from .models import Block, Friendship, User
 from .relations import blocked_ids, friend_ids, relation
 from .serializers import PublicUserSerializer
+from notifications.services import notify
 
 
 class ProfileSerializer(PublicUserSerializer):
@@ -75,10 +76,12 @@ class FriendActionView(APIView):
         rel = relation(request.user, other)
         if action == 'request' and rel == 'none':
             Friendship.objects.create(requester=request.user, addressee=other)
-        elif action == 'request' and rel == 'request_received':  # they already asked: becomes mutual
+            notify(other, 'friends', f"{request.user.first_name or request.user.username} t'a envoyé une demande d'ami.", '/amis', actor=request.user)
+        elif (action == 'request' and rel == 'request_received') or (action == 'accept' and rel == 'request_received'):
+            # (a mutual request also becomes a friendship)
             Friendship.objects.filter(requester=other, addressee=request.user).update(status='accepted')
-        elif action == 'accept' and rel == 'request_received':
-            Friendship.objects.filter(requester=other, addressee=request.user).update(status='accepted')
+            notify(other, 'friends', f"{request.user.first_name or request.user.username} a accepté ta demande d'ami.",
+                   f'/u/{request.user.username}', actor=request.user)
         elif action == 'decline' and rel in ('request_received', 'request_sent'):  # decline or cancel
             Friendship.objects.filter(Q(requester=request.user, addressee=other) | Q(requester=other, addressee=request.user),
                                       status='pending').delete()

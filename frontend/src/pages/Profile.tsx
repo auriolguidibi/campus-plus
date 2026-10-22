@@ -20,7 +20,10 @@ export default function Profile() {
 
   async function deleteAccount() {
     if (!confirm('Supprimer définitivement ton compte ? Cette action est irréversible.')) return
-    await api('/auth/me/', { method: 'DELETE' }); await logout()
+    const password = prompt('Confirme avec ton mot de passe')
+    if (!password) return
+    try { await api('/auth/me/', { method: 'DELETE', body: { password } }); await logout() }
+    catch { alert('Mot de passe incorrect.') }
   }
 
   return (
@@ -41,6 +44,7 @@ export default function Profile() {
       </section>
 
       <Link to="/amis" className="card block p-4 font-semibold">Mes amis & demandes →</Link>
+      {user.staff_role !== 'user' && <Link to="/admin" className="card block bg-primary/10 p-4 font-semibold text-primary">Espace {user.staff_role === 'admin' ? 'administrateur' : 'modérateur'} →</Link>}
 
       <section className="space-y-3">
         <h2 className="font-semibold">Mes publications</h2>

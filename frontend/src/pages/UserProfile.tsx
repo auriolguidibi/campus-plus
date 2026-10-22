@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { api, type Profile, type Relation } from '../api'
 import PostList from '../components/PostList'
+import ReportButton from '../components/ReportButton'
 import { Avatar, ErrorBox, Spinner } from '../components/ui'
 
 export default function UserProfile() {
@@ -59,7 +60,10 @@ export default function UserProfile() {
         ))}
       </div>
       <ErrorBox>{err}</ErrorBox>
-      <button onClick={block} className="text-xs text-danger">Bloquer cet utilisateur</button>
+      <div className="flex items-center gap-4">
+        <button onClick={block} className="text-xs text-danger">Bloquer cet utilisateur</button>
+        <ReportButton type="user" id={p.id} label="Signaler cet utilisateur" />
+      </div>
       <h2 className="font-semibold">Publications</h2>
       <PostList query={`author=${encodeURIComponent(p.username)}`} empty="Aucune publication." />
       <Link to="/amis" className="block text-center text-sm text-primary">Voir mes amis</Link>

@@ -2,6 +2,7 @@
 from django.db.models import Sum
 
 from accounts.relations import friend_ids
+from notifications.services import notify
 
 from .models import Badge, PointEntry, UserBadge
 
@@ -27,4 +28,6 @@ def check_badges(user):
         if code not in have and rule(user):
             badge = Badge.objects.filter(code=code).first()
             if badge:
-                UserBadge.objects.get_or_create(user=user, badge=badge)
+                _, created = UserBadge.objects.get_or_create(user=user, badge=badge)
+                if created:
+                    notify(user, 'challenges', f'Nouveau badge : {badge.icon} {badge.name}', '/classement')

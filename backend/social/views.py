@@ -14,6 +14,7 @@ from accounts.relations import blocked_ids, friend_ids
 from accounts.serializers import PublicUserSerializer
 from communities.models import Membership
 from communities.views import STAFF
+from notifications.services import notify
 
 from .models import Comment, Favorite, Post, PostMedia, Reaction
 
@@ -137,6 +138,9 @@ class PostViewSet(viewsets.ModelViewSet):
         obj, created = model.objects.get_or_create(post=post, user=request.user)
         if not created:
             obj.delete()
+        elif model is Reaction:
+            notify(post.author, 'social', f'{request.user.first_name or request.user.username} a aimé ta publication.',
+                   '/', actor=request.user, key=f'react:{post.id}')
         return Response({'active': created})
 
     @action(detail=True, methods=['post'])
@@ -157,5 +161,9 @@ class PostViewSet(viewsets.ModelViewSet):
         parent = ser.validated_data.get('parent')
         if parent and parent.post_id != post.id:
             return Response({'parent': 'Commentaire parent invalide.'}, status=status.HTTP_400_BAD_REQUEST)
-        ser.save(post=post, author=request.user)
+        cm = ser.save(post=post, author=request.user)
+        who = request.user.first_name or request.user.username
+        notify(post.author, 'social', f'{who} a commenté ta publication.', '/', actor=request.user, key=f'comment:{post.id}')
+        if parent:
+            notify(parent.author, 'social', f'{who} a répondu à ton commentaire.', '/', actor=request.user)
         return Response(ser.data, status=status.HTTP_201_CREATED)

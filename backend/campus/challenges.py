@@ -13,6 +13,7 @@ from rest_framework.views import APIView
 
 from accounts.models import User
 from accounts.serializers import PublicUserSerializer
+from notifications.services import notify
 from social.views import process_image
 
 from .badges import check_badges, total_points
@@ -169,6 +170,7 @@ class ReviewView(APIView):
             p.points, p.reviewed_by = pts, request.user
             p.save(update_fields=['points', 'reviewed_by'])
             PointEntry.objects.update_or_create(participation=p, defaults={'user': p.user, 'points': pts, 'reason': f'Défi : {ch.title}'})
+        notify(p.user, 'challenges', f'Ton défi « {ch.title} » a été noté : {pts}/{ch.max_points} points.', f'/defis/{ch.id}', actor=request.user)
         check_badges(p.user)
         return Response({'points': pts})
 

@@ -30,6 +30,7 @@ class EventRsvp(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='rsvps')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='event_rsvps')
     reminder = models.BooleanField(default=False)
+    reminded = models.BooleanField(default=False)  # reminder notification already sent
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['event', 'user'], name='one_rsvp')]

@@ -35,7 +35,7 @@ export async function api<T = any>(path: string, opts: { method?: string; body?:
 }
 
 export interface User {
-  id: number; username: string; first_name: string; last_name: string; email: string; school: string; is_staff: boolean
+  id: number; username: string; first_name: string; last_name: string; email: string; school: string; is_staff: boolean; staff_role: 'user' | 'moderator' | 'admin'
   field_of_study: string; promotion: string; bio: string; theme: 'light' | 'dark' | 'auto'
   verification: 'pending' | 'verified' | 'rejected'
 }

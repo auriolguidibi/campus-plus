@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../auth'
+import Bell from '../components/Bell'
 import PostList from '../components/PostList'
 import Stories from '../components/Stories'
 import { Avatar, Logo } from '../components/ui'
@@ -15,7 +16,7 @@ export default function Feed() {
     <div className="pt-4">
       <div className="mb-4 flex items-center justify-between">
         <Logo size={30} />
-        <Link to="/amis" className="text-sm font-semibold text-primary">Amis</Link>
+        <div className="flex items-center gap-2"><Link to="/amis" className="text-sm font-semibold text-primary">Amis</Link><Bell /></div>
       </div>
       <nav aria-label="Rubriques" className="mb-4 grid grid-cols-5 gap-2 text-center text-[11px] font-medium">
         {([['/marketplace', '🛍️', 'Marketplace'], ['/defis', '🏆', 'Défis'], ['/confessions', '💜', 'Confessions'], ['/evenements', '📅', 'Événements'], ['/classement', '📊', 'Classement']] as const).map(([to, icon, label]) => (

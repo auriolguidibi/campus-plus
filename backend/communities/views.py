@@ -6,6 +6,7 @@ from rest_framework.response import Response
 
 from accounts.models import User
 from accounts.serializers import PublicUserSerializer
+from notifications.services import notify
 
 from .models import Community, Membership
 
@@ -100,6 +101,8 @@ class CommunityViewSet(viewsets.ModelViewSet):
             return Response({'detail': 'Membre introuvable ou protégé.'}, status=400)
         m.role = role
         m.save(update_fields=['role'])
+        label = dict(Membership.Role.choices)[role]
+        notify(m.user, 'groups', f'Tu es maintenant {label.lower()} de « {c.name} ».', f'/communautes/{c.id}', actor=request.user)
         return Response({'role': role})
 
     @action(detail=True, methods=['post'], url_path=r'members/(?P<user_id>\d+)/remove')

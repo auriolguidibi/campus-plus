@@ -6,6 +6,8 @@ import { Forgot, Login, Register, Welcome } from './pages/Auth'
 import Feed from './pages/Feed'
 import Create from './pages/Create'
 import Profile from './pages/Profile'
+import Admin from './pages/Admin'
+import Notifications from './pages/Notifications'
 import Market from './pages/Market'
 import { ChallengePage, Challenges } from './pages/Challenges'
 import Confessions from './pages/Confessions'
@@ -56,6 +58,8 @@ export default function App() {
         <Route path="evenements" element={<Events />} />
         <Route path="evenements/nouveau" element={<EventForm />} />
         <Route path="evenements/:id" element={<EventPage />} />
+        <Route path="notifications" element={<Notifications />} />
+        <Route path="admin" element={<Admin />} />
         <Route path="classement" element={<Leaderboard />} />
         <Route path="messages" element={<Conversations />} />
         <Route path="messages/:id" element={<Thread />} />
