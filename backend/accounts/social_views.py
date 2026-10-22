@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Case, IntegerField, Q, When
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers, status
 from rest_framework.response import Response
@@ -57,6 +57,19 @@ class UserDetailView(APIView):
         if user is None:
             return Response({'detail': 'Introuvable.'}, status=404)
         return Response(ProfileSerializer(user, context={'request': request}).data)
+
+
+class FriendSuggestionsView(APIView):
+    """People you may know: any verified student you are not already connected with (same field/promotion first)."""
+
+    def get(self, request):
+        me = request.user
+        pending = Friendship.objects.filter(Q(requester=me) | Q(addressee=me)).values_list('requester_id', 'addressee_id')
+        skip = {me.id} | friend_ids(me) | blocked_ids(me) | {i for pair in pending for i in pair}
+        qs = (User.objects.filter(is_active=True, verification=User.Verification.VERIFIED).exclude(id__in=skip)
+              .annotate(rank=Case(When(field_of_study=me.field_of_study, then=0), When(promotion=me.promotion, then=1), default=2,
+                                  output_field=IntegerField())).order_by('rank', '-date_joined')[:6])
+        return Response(PublicUserSerializer(qs, many=True).data)
 
 
 class FriendsView(APIView):

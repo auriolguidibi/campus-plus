@@ -24,13 +24,20 @@ body { @apply bg-bg text-fg antialiased; font-family: Inter, system-ui, 'Segoe U
 select, option { color: rgb(var(--fg)); }
 select option { background-color: rgb(var(--card)); color: rgb(var(--fg)); }
 
-/* Launch splash (components/Splash.tsx) */
-@keyframes splash-pop { 0% { opacity: 0; transform: scale(.15) rotate(-16deg); filter: blur(14px); } 45% { opacity: 1; transform: scale(1.14) rotate(3deg); filter: blur(0); } 65% { transform: scale(.95) rotate(-1deg); } 82% { transform: scale(1.03); } 100% { opacity: 1; transform: scale(1) rotate(0); } }
-@keyframes splash-rays { 0% { transform: translate(-50%, -50%) rotate(0deg) scale(.6); opacity: 0; } 20% { opacity: 1; } 100% { transform: translate(-50%, -50%) rotate(110deg) scale(1); opacity: .9; } }
-@keyframes splash-ring { 0% { transform: translate(-50%, -50%) scale(.3); opacity: .9; } 100% { transform: translate(-50%, -50%) scale(3.2); opacity: 0; } }
-@keyframes splash-spark { 0% { transform: translateY(24px) scale(0); opacity: 0; } 35% { opacity: 1; transform: translateY(-8px) scale(1); } 100% { transform: translateY(-110px) scale(.2); opacity: 0; } }
-@keyframes splash-shine { 0% { transform: translateX(-140%) skewX(-18deg); } 100% { transform: translateX(420%) skewX(-18deg); } }
-@keyframes splash-out { 0% { opacity: 1; transform: scale(1); filter: blur(0); } 100% { opacity: 0; transform: scale(1.7); filter: blur(10px); } }
-@keyframes splash-tag { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-@keyframes splash-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+/* Launch splash (components/Splash.tsx): mascot runs in, brakes, gestures, then the screen irises out */
+@keyframes sp-run { 0% { transform: translateX(-110vw); } 100% { transform: translateX(0); } }
+@keyframes sp-hop { 0%, 100% { transform: translateY(0) rotate(0) scale(1, 1); } 22% { transform: translateY(-26px) rotate(-4deg) scale(.97, 1.04); } 50% { transform: translateY(0) rotate(0) scale(1.05, .94); } 75% { transform: translateY(-22px) rotate(4deg) scale(.98, 1.03); } }
+@keyframes sp-shadow { 0%, 100% { transform: scale(1); opacity: .6; } 22%, 75% { transform: scale(.7); opacity: .3; } 50% { transform: scale(1.08); opacity: .7; } }
+@keyframes sp-brake { 0% { transform: rotate(0) translateX(0); } 35% { transform: rotate(-9deg) translateX(14px); } 70% { transform: rotate(3deg); } 100% { transform: rotate(0); } }
+@keyframes sp-sway { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-2.5deg); } 75% { transform: rotate(2.5deg); } }
+@keyframes sp-wave-l { 0%, 100% { transform: rotate(0) scale(1); } 20% { transform: rotate(-18deg) scale(1.22); } 45% { transform: rotate(10deg) scale(1.12); } 70% { transform: rotate(-14deg) scale(1.2); } }
+@keyframes sp-wave-r { 0%, 100% { transform: rotate(0) scale(1); } 20% { transform: rotate(18deg) scale(1.22); } 45% { transform: rotate(-10deg) scale(1.12); } 70% { transform: rotate(14deg) scale(1.2); } }
+@keyframes sp-bubble { from { opacity: 0; transform: scale(0) rotate(-12deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
+@keyframes sp-letter { from { opacity: 0; transform: translateY(26px) scale(.3) rotate(-14deg); } to { opacity: 1; transform: none; } }
+@keyframes sp-fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes sp-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes sp-dust { 0% { opacity: 0; transform: translateX(0) scale(.3); } 25% { opacity: .9; } 100% { opacity: 0; transform: translateX(-70px) translateY(-14px) scale(1.8); } }
+@keyframes sp-speed { 0% { opacity: 0; transform: translateX(-120%); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateX(160%); } }
+@keyframes sp-jump { 0% { transform: translateY(0) scale(1); } 40% { transform: translateY(-60px) scale(1.05); } 100% { transform: translateY(-140px) scale(.6); opacity: 0; } }
+@keyframes sp-iris { 0% { clip-path: circle(150% at 50% 42%); } 100% { clip-path: circle(0% at 50% 42%); } }
 @media (prefers-reduced-motion: reduce) { .splash, .splash * { animation-duration: .01s !important; animation-delay: 0s !important; } }

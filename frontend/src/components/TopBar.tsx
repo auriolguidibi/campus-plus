@@ -1,30 +1,9 @@
-import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { api } from '../api'
+import { useCounts } from '../hooks'
 import type { IconName } from '../icons'
 import DataBar from './DataBar'
 import Icon from './Icon'
 import { Logo } from './ui'
-
-function useCounts() {
-  const [c, setC] = useState({ friends: 0, messages: 0, notifications: 0 })
-  useEffect(() => {
-    const load = async () => {
-      const [f, m, n] = await Promise.allSettled([
-        api<unknown[]>('/friends/requests/'), api<{ unread: number }>('/conversations/unread/'), api<{ unread: number }>('/notifications/unread-count/'),
-      ])
-      setC({
-        friends: f.status === 'fulfilled' ? f.value.length : 0,
-        messages: m.status === 'fulfilled' ? m.value.unread : 0,
-        notifications: n.status === 'fulfilled' ? n.value.unread : 0,
-      })
-    }
-    load()
-    const t = setInterval(load, 20000)
-    return () => clearInterval(t)
-  }, [])
-  return c
-}
 
 const round = 'grid h-11 w-11 place-items-center rounded-full bg-soft'
 

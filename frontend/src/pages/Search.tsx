@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { api, fcfa, type Community, type Listing, type Page, type Profile } from '../api'
 import Icon from '../components/Icon'
 import { Avatar, Spinner } from '../components/ui'
 
 /** Global search: every student of the campus (whatever their class), communities and Marketplace listings. */
 export default function Search() {
-  const [q, setQ] = useState('')
+  const [params] = useSearchParams()
+  const [q, setQ] = useState(params.get('q') ?? '')
   const [res, setRes] = useState<{ users: Profile[]; groups: Community[]; items: Listing[] } | null>(null)
 
   useEffect(() => {

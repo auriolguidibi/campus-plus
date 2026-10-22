@@ -76,3 +76,10 @@ Pas encore fait : notifications push, invitations/annonces de groupe (fonctionna
 - Tous les étudiants peuvent se voir, se rechercher et s'écrire quelle que soit leur classe ou promotion (« Pour toi » = tout le campus + mes groupes).
 - Photo de profil et de couverture : ajout, remplacement et suppression (recadrage et recompression côté serveur).
 - 50 tests backend. Marque : EIG Vibes (logo, écran de lancement animé, barre de navigation unique en haut). Thème clair par défaut.
+
+## Écran de lancement et version PC
+
+- Au démarrage (à chaque ouverture), la mascotte du logo arrive en courant, freine, fait son geste des deux mains avec une bulle « Salut ! », le titre EIG Vibes apparaît lettre par lettre, puis l'écran s'ouvre en iris sur le site (il attend la fin du chargement du compte). Un toucher le passe ; mouvement réduit respecté. `/?splash-t=2700` fige l'animation à 2,7 s pour l'inspecter.
+- Version PC (écrans ≥ 1024 px) : colonne gauche (logo, navigation avec pastilles, carte défis, utilisateur), barre de recherche, fil central (stories rondes, composer à 4 raccourcis) et colonne droite (suggestions d'amis, groupes populaires, prochain événement). Sur téléphone : barre unique en haut.
+- Marketplace refaite : héro avec recherche, catégories à icônes, filtres latéraux (PC) ou repliables (mobile), cartes produit (prix, état, favori, vendeur et note).
+- 51 tests backend.

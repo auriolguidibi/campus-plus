@@ -117,7 +117,7 @@ export default function PostCard({ post, onChange, onRemove }: { post: Post; onC
 
   if (hidden) {
     return (
-      <div className="-mx-4 flex items-center justify-between bg-card px-4 py-4 text-sm">
+      <div className="-mx-4 flex items-center justify-between bg-card px-4 py-4 text-sm lg:mx-0 lg:rounded-2xl lg:border lg:border-line">
         <span className="text-muted">Publication masquée.</span>
         <button className="font-semibold text-link" onClick={() => hide(false)}>Annuler</button>
       </div>
@@ -126,7 +126,7 @@ export default function PostCard({ post, onChange, onRemove }: { post: Post; onC
 
   const act = 'flex flex-1 items-center justify-center gap-2 py-2.5 text-sm font-semibold text-muted'
   return (
-    <article className="-mx-4 bg-card">
+    <article className="-mx-4 bg-card lg:mx-0 lg:rounded-2xl lg:border lg:border-line">
       <header className="flex items-start gap-3 px-4 pt-3">
         <Link to={`/u/${post.author.username}`}><Avatar user={post.author} size={44} ring /></Link>
         <div className="min-w-0 flex-1">

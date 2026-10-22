@@ -91,7 +91,7 @@ export default function Stories() {
   const card = 'relative h-[184px] w-[105px] shrink-0 overflow-hidden rounded-xl border border-line bg-soft text-left'
   return (
     <div>
-      <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1" aria-label="Stories">
+      <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 lg:hidden" aria-label="Stories">
         <label className={`${card} flex cursor-pointer flex-col bg-card`}>
           <span className="block h-[132px] w-full overflow-hidden bg-primary/15">
             {user?.avatar && !free ? <img src={user.avatar} alt="" className="h-full w-full object-cover" />
@@ -114,6 +114,22 @@ export default function Stories() {
             </button>
           )
         })}
+      </div>
+      <div className="hidden gap-5 overflow-x-auto pb-1 lg:flex" aria-label="Stories">
+        <label className="flex w-[84px] shrink-0 cursor-pointer flex-col items-center gap-2 text-center text-xs font-semibold">
+          <span className="grid h-[72px] w-[72px] place-items-center rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-500 text-white shadow-md shadow-primary/30">
+            {busy ? <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white" /> : <Icon name="add" bold size={34} />}</span>
+          Créer une story
+          <input type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => { upload(e.target.files?.[0]); e.target.value = '' }} />
+        </label>
+        {groups.map((g) => (
+          <button key={g.author.id} onClick={() => setOpen(g)} className="flex w-[84px] shrink-0 flex-col items-center gap-2 text-center text-xs font-semibold" aria-label={`Story de ${g.author.first_name}`}>
+            <span className={`rounded-full p-[3px] ${g.all_seen ? 'bg-line' : 'bg-gradient-to-tr from-violet-600 via-fuchsia-500 to-amber-400'}`}>
+              <span className="block rounded-full bg-card p-[3px]"><Avatar user={g.author} size={64} /></span>
+            </span>
+            <span className="w-full truncate">{g.author.id === user?.id ? 'Ma story' : g.author.first_name}</span>
+          </button>
+        ))}
       </div>
       <label className="mt-1 flex items-center gap-2 text-xs text-muted">Visibilité de ta prochaine story :
         <select value={vis} onChange={(e) => setVis(e.target.value)} className="rounded-lg border border-line bg-soft px-2 py-1">

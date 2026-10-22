@@ -50,3 +50,14 @@ class ProfilePhotoTests(APITestCase):
         self.assertEqual(cid.status_code, 200)
         self.assertEqual(self.client.post(f'/api/conversations/{cid.data["id"]}/messages/', {'text': 'Salut !'}, format='json').status_code, 201)
         self.assertIn('avatar', self.client.get('/api/users/ben/').data)
+
+    def test_friend_suggestions_exclude_connected_and_blocked(self):
+        c = User.objects.create_user('cy', 'cy@x.bj', PW, verification='verified', promotion='L1')
+        d = User.objects.create_user('di', 'di@x.bj', PW, verification='pending')
+        self.client.force_authenticate(self.a)
+        names = lambda: [u['username'] for u in self.client.get('/api/friends/suggestions/').data]
+        self.assertEqual(set(names()), {'ben', 'cy'})  # unverified students are not suggested
+        self.client.post(f'/api/friends/request/{self.b.id}/')
+        self.client.post(f'/api/blocks/{c.id}/')
+        self.assertEqual(names(), [])
+        self.assertNotIn('ana', names())
