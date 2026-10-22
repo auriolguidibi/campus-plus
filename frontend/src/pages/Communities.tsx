@@ -61,7 +61,7 @@ export default function Communities() {
 
   return (
     <div className="space-y-4 pt-6">
-      <Banner title="Communautés" subtitle="Filières, clubs, promos, projets" icon="users"
+      <Banner title="Communautés" subtitle="Filières, clubs, promos, projets" icon="users" image="hero"
         action={<button className="rounded-full bg-white/20 px-3 py-1.5 text-xs font-semibold" onClick={() => setCreating(!creating)}>{creating ? 'Fermer' : 'Créer'}</button>} />
       {creating && <NewCommunity onDone={() => setCreating(false)} />}
       <div className="grid grid-cols-2 gap-2 rounded-xl bg-soft p-1" role="tablist">

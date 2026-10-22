@@ -53,7 +53,7 @@ export default function Market() {
   const filtered = query !== ''
   return (
     <div className="space-y-4 pt-6">
-      <Banner title="Marketplace" subtitle="Achète et vends entre étudiants" icon="shop"
+      <Banner title="Marketplace" subtitle="Achète et vends entre étudiants" icon="shop" image="classroom"
         action={<Link to="/marketplace/mes-annonces" className="rounded-full bg-white/20 px-3 py-1.5 text-xs font-semibold">Mon espace</Link>} />
       <div className="flex gap-2">
         <input className="field" placeholder="Rechercher un produit, service…" value={q} onChange={(e) => setQ(e.target.value)} />

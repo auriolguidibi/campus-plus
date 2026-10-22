@@ -2,11 +2,11 @@ import type { ReactNode } from 'react'
 import type { IconName } from '../icons'
 import Icon from './Icon'
 
-/** Section header with a campus photo background (public/img/campus.jpg). */
-export default function Banner({ title, subtitle, icon, action }: { title: string; subtitle?: string; icon: IconName; action?: ReactNode }) {
+/** Section header with a campus photo background (public/img/*.jpg). */
+export default function Banner({ title, subtitle, icon, action, image = 'hero' }: { title: string; subtitle?: string; icon: IconName; action?: ReactNode; image?: 'hero' | 'classroom' | 'lake' | 'park' }) {
   return (
     <header className="relative overflow-hidden rounded-xl2 bg-cover bg-center p-4 text-white shadow-md"
-      style={{ backgroundImage: "linear-gradient(100deg, rgb(24 10 70 / .88) 0%, rgb(24 10 70 / .30) 100%), url('/img/campus.jpg')" }}>
+      style={{ backgroundImage: `linear-gradient(100deg, rgb(24 10 70 / .88) 0%, rgb(24 10 70 / .30) 100%), url('/img/${image}.jpg')` }}>
       <div className="flex items-center gap-3">
         <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white/15"><Icon name={icon} bold size={24} /></span>
         <div className="min-w-0 flex-1">

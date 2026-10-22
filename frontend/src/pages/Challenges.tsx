@@ -13,7 +13,7 @@ export function Challenges() {
   useEffect(() => { setItems(null); api<Challenge[]>(`/challenges/?status=${tab}`).then(setItems).catch(() => setItems([])) }, [tab])
   return (
     <div className="space-y-4 pt-6">
-      <Banner title="Défis & Battles" subtitle="Relève des défis, gagne des points" icon="trophy"
+      <Banner title="Défis & Battles" subtitle="Relève des défis, gagne des points" icon="trophy" image="park"
         action={<Link to="/classement" className="rounded-full bg-white/20 px-3 py-1.5 text-xs font-semibold">Classement</Link>} />
       <div className="grid grid-cols-3 gap-1 rounded-xl bg-soft p-1" role="tablist">
         {([['open', 'En cours'], ['mine', 'Mes participations'], ['closed', 'Terminés']] as const).map(([v, l]) => (

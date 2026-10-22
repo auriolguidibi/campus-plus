@@ -20,7 +20,7 @@ export function Events() {
   }, [tab])
   return (
     <div className="space-y-4 pt-6">
-      <Banner title="Événements" subtitle="Soirées, hackathons, conférences…" icon="calendar"
+      <Banner title="Événements" subtitle="Soirées, hackathons, conférences…" icon="calendar" image="lake"
         action={<Link to="/evenements/nouveau" className="rounded-full bg-white/20 px-3 py-1.5 text-xs font-semibold">Organiser</Link>} />
       <div className="grid grid-cols-3 gap-1 rounded-xl bg-soft p-1" role="tablist">
         {([['upcoming', 'À venir'], ['reminders', 'Mes rappels'], ['past', 'Archives']] as const).map(([v, l]) => (
@@ -31,7 +31,7 @@ export function Events() {
         <div className="space-y-3">
           {items.map((e) => (
             <Link key={e.id} to={`/evenements/${e.id}`} className="card block overflow-hidden">
-              <img src={e.image ?? '/img/campus.jpg'} alt="" loading="lazy" className="h-32 w-full object-cover" />
+              <img src={e.image ?? '/img/lake.jpg'} alt="" loading="lazy" className="h-32 w-full object-cover" />
               <div className="p-4"><p className="text-xs text-link">{CATS[e.category]}</p><p className="font-semibold">{e.title}</p>
                 <p className="text-xs text-muted">{when(e.starts_at)} · {e.location}</p>
                 <p className="mt-1 text-xs text-muted">{e.going_count} participant{e.going_count > 1 ? 's' : ''}{e.going && ' · tu y vas'}</p></div>

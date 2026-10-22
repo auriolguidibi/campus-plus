@@ -6,15 +6,9 @@ import Icon from '../components/Icon'
 import { Check, Field, SelectField, StrengthMeter, Submit, passwordStrength } from '../components/form'
 import { ErrorBox, Logo } from '../components/ui'
 
-const HERO = "linear-gradient(180deg, rgb(24 10 70 / .30) 0%, rgb(24 10 70 / .50) 40%, rgb(24 10 70 / .93) 100%), url('/img/welcome.jpg')"
-
-function Credit() {
-  return (
-    <p className="text-[10px] text-white/60">
-      Photo : <a className="underline" href="https://commons.wikimedia.org/wiki/File:Campus_hustle.jpg" target="_blank" rel="noreferrer">Marksllan</a>, CC BY-SA 4.0
-    </p>
-  )
-}
+const shade = (img: string) => `linear-gradient(180deg, rgb(24 10 70 / .30) 0%, rgb(24 10 70 / .50) 40%, rgb(24 10 70 / .93) 100%), url('/img/${img}.jpg')`
+const HERO = shade('welcome')
+const HEADER = shade('hero')
 
 export function Welcome() {
   return (
@@ -33,7 +27,6 @@ export function Welcome() {
         <Link to="/connexion" className="flex w-full items-center justify-center rounded-2xl bg-primary py-3.5 text-sm font-semibold text-primary-fg shadow-lg">Se connecter</Link>
         <Link to="/inscription" className="flex w-full items-center justify-center rounded-2xl border-2 border-white/80 py-3.5 text-sm font-semibold">Créer un compte</Link>
         <p className="pt-2 text-center text-xs text-white/75">Rejoins la communauté des étudiants de ton école !</p>
-        <div className="text-center"><Credit /></div>
       </div>
     </div>
   )
@@ -42,7 +35,7 @@ export function Welcome() {
 function Shell({ tab, children }: { tab?: 'login' | 'register'; children: ReactNode }) {
   return (
     <div className="mx-auto min-h-dvh max-w-md">
-      <header className="relative flex h-60 flex-col items-center justify-center gap-2 bg-cover bg-center pt-safe text-white" style={{ backgroundImage: HERO, backgroundPosition: 'center 30%' }}>
+      <header className="relative flex h-60 flex-col items-center justify-center gap-2 bg-cover bg-center pt-safe text-white" style={{ backgroundImage: HEADER, backgroundPosition: 'center 35%' }}>
         <Logo size={44} tone="light" />
         <p className="text-sm text-white/90">Ton école. Tes amis. Tes délires.</p>
       </header>

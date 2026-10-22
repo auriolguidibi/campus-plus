@@ -73,10 +73,7 @@ export default function Profile() {
         ))}
       </section>
 
-      <p className="text-center text-[11px] text-muted">
-        Photos : <a className="underline" href="https://commons.wikimedia.org/wiki/File:Campus_hustle.jpg" target="_blank" rel="noreferrer">Marksllan</a> et{' '}
-        <a className="underline" href="https://commons.wikimedia.org/wiki/File:Tugwell_Hall,_Cape_Town_(South_Africa).jpg" target="_blank" rel="noreferrer">Olga Ernst</a>, CC BY-SA 4.0 · Icônes : Solar (Iconify)
-      </p>
+      <p className="text-center text-[11px] text-muted">Icônes : Solar (Iconify)</p>
 
       <section className="space-y-2">
         <button className="btn-outline" onClick={logout}>Déconnexion</button>
