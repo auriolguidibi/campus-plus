@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../auth'
 import PostList from '../components/PostList'
+import Stories from '../components/Stories'
 import { Avatar, Logo } from '../components/ui'
 
 const SCOPES = [['', 'Amis & groupes'], ['scope=campus', 'Tout le campus'], ['scope=favorites', 'Favoris']] as const
@@ -16,11 +17,12 @@ export default function Feed() {
         <Logo size={30} />
         <Link to="/amis" className="text-sm font-semibold text-primary">Amis</Link>
       </div>
-      <Link to="/marketplace" className="card mb-4 flex items-center gap-3 bg-primary/10 p-3">
-        <span className="text-2xl">🛍️</span>
-        <span className="flex-1"><b className="block">Marketplace</b><span className="text-xs text-muted">Achète et vends entre étudiants</span></span>
-        <span className="text-primary">→</span>
-      </Link>
+      <nav aria-label="Rubriques" className="mb-4 grid grid-cols-5 gap-2 text-center text-[11px] font-medium">
+        {([['/marketplace', '🛍️', 'Marketplace'], ['/defis', '🏆', 'Défis'], ['/confessions', '💜', 'Confessions'], ['/evenements', '📅', 'Événements'], ['/classement', '📊', 'Classement']] as const).map(([to, icon, label]) => (
+          <Link key={to} to={to} className="card flex flex-col items-center gap-1 py-2"><span className="text-xl" aria-hidden>{icon}</span>{label}</Link>
+        ))}
+      </nav>
+      <Stories />
       <Link to="/creer" className="card mb-4 flex items-center gap-3 p-3 text-sm text-muted">
         {user && <Avatar user={user} size={36} />} Quoi de neuf sur le campus ?
       </Link>

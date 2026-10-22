@@ -7,6 +7,10 @@ import Feed from './pages/Feed'
 import Create from './pages/Create'
 import Profile from './pages/Profile'
 import Market from './pages/Market'
+import { ChallengePage, Challenges } from './pages/Challenges'
+import Confessions from './pages/Confessions'
+import { EventForm, EventPage, Events } from './pages/Events'
+import Leaderboard from './pages/Leaderboard'
 import ListingForm from './pages/ListingForm'
 import ListingPage from './pages/ListingPage'
 import MyMarket from './pages/MyMarket'
@@ -46,6 +50,13 @@ export default function App() {
         <Route path="marketplace/mes-annonces" element={<MyMarket />} />
         <Route path="marketplace/:id" element={<ListingPage />} />
         <Route path="marketplace/:id/modifier" element={<ListingForm />} />
+        <Route path="defis" element={<Challenges />} />
+        <Route path="defis/:id" element={<ChallengePage />} />
+        <Route path="confessions" element={<Confessions />} />
+        <Route path="evenements" element={<Events />} />
+        <Route path="evenements/nouveau" element={<EventForm />} />
+        <Route path="evenements/:id" element={<EventPage />} />
+        <Route path="classement" element={<Leaderboard />} />
         <Route path="messages" element={<Conversations />} />
         <Route path="messages/:id" element={<Thread />} />
         <Route path="*" element={<Navigate to="/" replace />} />

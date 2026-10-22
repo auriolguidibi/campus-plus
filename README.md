@@ -27,5 +27,12 @@ vendeur de la semaine, statuts brouillon/publié/réservé/vendu/archivé, offre
 vérifiés) et messagerie privée liée au produit (rafraîchissement par polling toutes les 4 s, pas de WebSocket).
 `MARKET_REQUIRE_MODERATION=1` met les nouvelles annonces en attente (validation via l'admin Django). 12 tests backend.
 
-Pas encore fait : signalement d'annonces, groupes de discussion, pièces jointes en messagerie, paiement mobile, vidéos, sondages, stories, photo de profil/couverture, annonces de groupe, Marketplace, messagerie temps réel, défis, confessions,
+Phase 5 : stories photo (expiration 24 h configurable, spectateurs, visibilité tout le campus/amis, `manage.py purge_stories`),
+événements (RSVP, rappel enregistré, partage, archives), défis (quiz corrigés par le serveur, autres défis notés par un
+organisateur, une participation par défi, journal de points), classements semaine/général/promotions, badges calculés
+sur données réelles, confessions anonymes (pré-modération, filtre infos personnelles/menaces, 3 signalements = masquage,
+file de modération sans auteur). Les défis se créent via l'admin Django ou l'API (staff) ; `manage.py seed_campus
+--organizer <pseudo>` crée des défis/événements de démonstration. 20 tests backend.
+
+Pas encore fait : stories vidéo, défis collectifs, notifications push des rappels, signalement d'annonces, groupes de discussion, pièces jointes en messagerie, paiement mobile, vidéos, sondages, stories, photo de profil/couverture, annonces de groupe, Marketplace, messagerie temps réel, défis, confessions,
 événements, classements, notifications, administration (hors Django admin), push. Les onglets Communautés/Messages affichent « Pas encore disponible ».

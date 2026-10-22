@@ -24,6 +24,8 @@ INSTALLED_APPS = [
     'social',
     'market',
     'chat',
+    'stories',
+    'campus',
 ]
 
 MIDDLEWARE = [
@@ -94,3 +96,8 @@ CAMPUS_INVITE_CODES = [c for c in os.environ.get('CAMPUS_INVITE_CODES', 'CAMPUS2
 # Marketplace: when True, new listings wait in 'pending' until a moderator publishes them.
 MARKET_REQUIRE_MODERATION = os.environ.get('MARKET_REQUIRE_MODERATION', '0') == '1'
 MARKET_FORBIDDEN_TERMS = ['arme à feu', 'drogue', 'cocaïne', 'cannabis', 'munition', 'faux billet', 'faux diplôme']
+
+# Stories expire after this many hours (run `manage.py purge_stories` periodically to delete expired files).
+STORY_DURATION_HOURS = int(os.environ.get('STORY_DURATION_HOURS', '24'))
+# Confessions wait for moderator approval before appearing publicly.
+CONFESSIONS_PREMODERATION = os.environ.get('CONFESSIONS_PREMODERATION', '1') == '1'

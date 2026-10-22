@@ -35,7 +35,7 @@ export async function api<T = any>(path: string, opts: { method?: string; body?:
 }
 
 export interface User {
-  id: number; username: string; first_name: string; last_name: string; email: string; school: string
+  id: number; username: string; first_name: string; last_name: string; email: string; school: string; is_staff: boolean
   field_of_study: string; promotion: string; bio: string; theme: 'light' | 'dark' | 'auto'
   verification: 'pending' | 'verified' | 'rejected'
 }
@@ -77,3 +77,16 @@ export interface ConversationSummary {
   last_message: ChatMessage | null; unread: number; updated_at: string
 }
 export const fcfa = (n: number) => `${n.toLocaleString('fr-FR')} FCFA`
+
+export interface StoryItem { id: number; url: string; caption: string; visibility: 'everyone' | 'friends'; created_at: string; expires_at: string; seen: boolean }
+export interface StoryGroup { author: PublicUser; stories: StoryItem[]; all_seen: boolean }
+export interface CampusEvent {
+  id: number; title: string; description: string; category: string; starts_at: string; location: string; image: string | null
+  rules: string; organizer: PublicUser; going_count: number; going: boolean; reminder: boolean; is_past: boolean
+}
+export interface ChallengeMine { id: number; points: number | null; submitted_at: string; answer: string; image: string | null; reviewed: boolean }
+export interface Challenge {
+  id: number; title: string; kind: string; kind_label: string; max_points: number; starts_at: string; deadline: string
+  is_open: boolean; auto_graded: boolean; participants: number; mine: ChallengeMine | null; can_manage: boolean
+  description?: string; rules?: string; questions?: { q: string; options: string[] }[]
+}

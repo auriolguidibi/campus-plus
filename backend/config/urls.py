@@ -10,5 +10,7 @@ urlpatterns = [
     path('api/', include('communities.urls')),
     path('api/', include('market.urls')),
     path('api/', include('chat.urls')),
+    path('api/', include('stories.urls')),
+    path('api/', include('campus.urls')),
     path('api/', include('social.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
