@@ -28,7 +28,7 @@ export default function Search() {
     <div className="space-y-4 pt-6">
       <div className="flex items-center gap-2 rounded-full border border-line bg-soft px-4 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/15">
         <Icon name="search" size={22} className="text-muted" />
-        <input autoFocus className="min-w-0 flex-1 bg-transparent py-3 text-[15px] outline-none placeholder:text-muted/70" placeholder="Rechercher sur Campus+" aria-label="Rechercher" value={q} onChange={(e) => setQ(e.target.value)} />
+        <input autoFocus className="min-w-0 flex-1 bg-transparent py-3 text-[15px] outline-none placeholder:text-muted/70" placeholder="Rechercher sur EIG Vibes" aria-label="Rechercher" value={q} onChange={(e) => setQ(e.target.value)} />
       </div>
       {q.trim().length < 2 && <p className="py-8 text-center text-sm text-muted">Cherche un étudiant (toutes les classes), une communauté ou un article.</p>}
       {q.trim().length >= 2 && res === null && <Spinner />}

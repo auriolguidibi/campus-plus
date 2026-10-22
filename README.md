@@ -75,4 +75,4 @@ Pas encore fait : notifications push, invitations/annonces de groupe (fonctionna
 - **Mode gratuit** (économie de données) : aucune photo n'est téléchargée tant qu'on ne la touche pas (publications, stories, annonces, couvertures, avatars) ; le choix est mémorisé sur l'appareil. **Mode payant** : tout se charge.
 - Tous les étudiants peuvent se voir, se rechercher et s'écrire quelle que soit leur classe ou promotion (« Pour toi » = tout le campus + mes groupes).
 - Photo de profil et de couverture : ajout, remplacement et suppression (recadrage et recompression côté serveur).
-- 50 tests backend.
+- 50 tests backend. Marque : EIG Vibes (logo, écran de lancement animé, barre de navigation unique en haut). Thème clair par défaut.

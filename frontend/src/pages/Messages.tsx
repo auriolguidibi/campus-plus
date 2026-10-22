@@ -166,7 +166,7 @@ export function Thread() {
 
   if (missing) return <p className="pt-10 text-center text-muted">Conversation introuvable.</p>
   return (
-    <div className="flex min-h-[calc(100dvh-7rem)] flex-col pt-4">
+    <div className="flex min-h-[calc(100dvh-13rem)] flex-col pt-4">
       <header className="mb-3 flex items-center gap-3 border-b border-line pb-3">
         <Link to="/messages" aria-label="Retour" className="text-link"><Icon name="back" size={24} /></Link>
         {conv && <><Avatar user={conv.other} size={36} />
@@ -190,7 +190,7 @@ export function Thread() {
         <div ref={bottom} />
       </div>
       <ErrorBox>{err}</ErrorBox>
-      <div className="sticky bottom-20 mt-3 bg-bg py-2">
+      <div className="sticky bottom-0 mt-3 bg-bg py-2 pb-safe">
         {recording ? <Recorder onSend={sendVoice} onCancel={() => setRecording(false)} /> : (
           <form onSubmit={send} className="flex items-center gap-2">
             <div className="flex min-w-0 flex-1 items-center rounded-2xl border border-line bg-soft px-3.5 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/15">

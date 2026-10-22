@@ -138,7 +138,7 @@ export default function ListingPage() {
               <div className="space-y-2">
                 <p className="text-sm">À qui l'as-tu vendu ? (l'acheteur pourra laisser un avis vérifié)</p>
                 {buyers.map((b) => <button key={b.id} className="btn-outline" onClick={() => run(() => api(`/listings/${l.id}/mark-sold/`, { body: { buyer_id: b.id } }))}>@{b.username}</button>)}
-                <button className="w-full py-1 text-sm text-muted" onClick={() => run(() => api(`/listings/${l.id}/mark-sold/`, { body: {} }))}>Vendu hors Campus+ (sans avis)</button>
+                <button className="w-full py-1 text-sm text-muted" onClick={() => run(() => api(`/listings/${l.id}/mark-sold/`, { body: {} }))}>Vendu hors EIG Vibes (sans avis)</button>
               </div>
             )
           )}

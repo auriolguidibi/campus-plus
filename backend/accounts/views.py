@@ -102,7 +102,7 @@ class ForgotPasswordView(APIView):
         if user:
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
-            send_mail('Campus+ — réinitialisation du mot de passe',
+            send_mail('EIG Vibes — réinitialisation du mot de passe',
                       f'Code : {uid}.{token}', None, [user.email])
         return Response({'detail': 'Si ce compte existe, un e-mail a été envoyé.'})
 

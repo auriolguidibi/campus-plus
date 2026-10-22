@@ -108,7 +108,7 @@ export default function Market() {
       {!loading && !err && items.length === 0 && <p className="py-10 text-center text-sm text-muted">{filtered ? 'Aucun résultat pour ces filtres.' : "Aucune annonce pour l'instant. Sois le premier à vendre !"}</p>}
       {next && !loading && <button className="btn-outline" onClick={() => load(next, false)}>Voir plus</button>}
       <Link to="/marketplace/nouveau" aria-label="Vendre un article"
-        className="fixed bottom-24 right-4 z-10 flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-bg shadow-lg"><Icon name="add2" bold size={20} /> Vendre</Link>
+        className="fixed bottom-6 right-4 z-10 flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-bg shadow-lg"><Icon name="add2" bold size={20} /> Vendre</Link>
     </div>
   )
 }

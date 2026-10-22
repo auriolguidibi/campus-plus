@@ -20,7 +20,7 @@ class User(AbstractUser):
     field_of_study = models.CharField(max_length=120, blank=True)
     promotion = models.CharField(max_length=40, blank=True)
     bio = models.CharField(max_length=300, blank=True)
-    theme = models.CharField(max_length=5, choices=Theme.choices, default=Theme.AUTO)
+    theme = models.CharField(max_length=5, choices=Theme.choices, default=Theme.LIGHT)
     verification = models.CharField(max_length=10, choices=Verification.choices, default=Verification.PENDING)
 
     class Role(models.TextChoices):

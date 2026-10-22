@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
+import Splash from './components/Splash'
 import { AuthProvider } from './auth'
 import { DataModeProvider } from './dataMode'
 import { ThemeProvider } from './theme'
@@ -14,6 +15,7 @@ createRoot(document.getElementById('root')!).render(
         <DataModeProvider>
           <AuthProvider>
             <App />
+            <Splash />
           </AuthProvider>
         </DataModeProvider>
       </ThemeProvider>

@@ -102,7 +102,7 @@ export function EventForm() {
   return (
     <form onSubmit={submit} className="space-y-3 pt-6">
       <h1 className="text-2xl font-bold">Organiser un événement</h1>
-      <Field name="title" label="Titre" icon="calendar" maxLength={120} placeholder="Hackathon Campus+" required />
+      <Field name="title" label="Titre" icon="calendar" maxLength={120} placeholder="Hackathon EIG Vibes" required />
       <SelectField name="category" label="Type d'événement" icon="fire" defaultValue="club">{Object.entries(CATS).map(([v, l]) => <option key={v} value={v}>{l}</option>)}</SelectField>
       <TextArea name="description" label="Description" icon="notebook" required />
       <Field name="starts_at" label="Date et heure" icon="clock" type="datetime-local" required />

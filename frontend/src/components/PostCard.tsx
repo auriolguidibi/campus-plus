@@ -109,7 +109,7 @@ export default function PostCard({ post, onChange, onRemove }: { post: Post; onC
   async function share() {
     const url = `${location.origin}/publication/${post.id}`
     try {
-      if (navigator.share) await navigator.share({ title: `${post.author.first_name} sur Campus+`, url })
+      if (navigator.share) await navigator.share({ title: `${post.author.first_name} sur EIG Vibes`, url })
       else { await navigator.clipboard.writeText(url); setNote('Lien copié') ; setTimeout(() => setNote(''), 2000) }
     } catch { /* share cancelled */ }
   }

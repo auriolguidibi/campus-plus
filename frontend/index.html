@@ -3,12 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#6d28d9" />
-    <title>Campus+</title>
+    <meta name="theme-color" content="#2b0f70" />
+    <title>EIG Vibes</title>
+    <link rel="icon" type="image/png" href="/img/favicon.png" />
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
+    <meta name="description" content="EIG Vibes : le réseau social des étudiants de l'EIG Bénin." />
     <script>
       // Apply stored theme before first paint to avoid a flash.
       try {
-        var m = localStorage.getItem('campus-theme') || 'auto';
+        var m = localStorage.getItem('campus-theme') || 'light';
         var d = m === 'dark' || (m === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
         document.documentElement.classList.toggle('dark', d);
       } catch (e) {}

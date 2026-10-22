@@ -3,10 +3,10 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 export type ThemeMode = 'light' | 'dark' | 'auto'
 const KEY = 'campus-theme'
 const read = (): ThemeMode => {
-  try { const v = localStorage.getItem(KEY); return v === 'light' || v === 'dark' ? v : 'auto' } catch { return 'auto' }
+  try { const v = localStorage.getItem(KEY); return v === 'light' || v === 'dark' || v === 'auto' ? v : 'light' } catch { return 'light' }
 }
 
-const Ctx = createContext<{ mode: ThemeMode; setMode: (m: ThemeMode) => void }>({ mode: 'auto', setMode: () => {} })
+const Ctx = createContext<{ mode: ThemeMode; setMode: (m: ThemeMode) => void }>({ mode: 'light', setMode: () => {} })
 export const useTheme = () => useContext(Ctx)
 
 export function ThemeProvider({ children }: { children: ReactNode }) {

@@ -4,11 +4,13 @@ import { useDataMode } from '../dataMode'
 import Icon from './Icon'
 
 export function Logo({ size = 40, tone = 'auto' }: { size?: number; tone?: 'auto' | 'light' }) {
+  const light = tone === 'light'
   return (
-    <div className={`flex items-center gap-2 ${tone === 'light' ? 'text-white' : 'text-link'}`}>
-      <Icon name="school" bold size={size} />
-      <span className={`font-extrabold tracking-tight ${tone === 'light' ? 'text-white' : 'text-fg'}`} style={{ fontSize: size * 0.8 }}>
-        Campus<span className={tone === 'light' ? 'text-emerald-300' : 'text-link'}>+</span>
+    <div className="flex items-center gap-2" aria-label="EIG Vibes" role="img">
+      <img src="/img/mascot.png" alt="" width={size} height={size} draggable={false} className="rounded-xl object-cover shadow-md shadow-primary/30" style={{ width: size, height: size }} />
+      <span className="font-black italic leading-none tracking-tight" style={{ fontSize: size * 0.62 }}>
+        <span className={light ? 'text-white' : 'text-fg'}>EIG </span>
+        <span className={`bg-gradient-to-r bg-clip-text text-transparent ${light ? 'from-violet-300 to-fuchsia-300' : 'from-violet-600 to-fuchsia-500'}`}>Vibes</span>
       </span>
     </div>
   )

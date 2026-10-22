@@ -7,7 +7,7 @@ import { Check, Field, StrengthMeter, Submit, passwordStrength } from '../compon
 import { useDataMode } from '../dataMode'
 import { ErrorBox, Logo } from '../components/ui'
 
-const shade = (img: string) => `linear-gradient(180deg, rgb(24 10 70 / .30) 0%, rgb(24 10 70 / .50) 40%, rgb(24 10 70 / .93) 100%), url('/img/${img}.jpg')`
+const shade = (img: string) => `linear-gradient(180deg, rgb(24 10 70 / .30) 0%, rgb(24 10 70 / .52) 32%, rgb(24 10 70 / .82) 58%, rgb(24 10 70 / .95) 100%), url('/img/${img}.jpg')`
 const solid = 'linear-gradient(180deg, rgb(24 10 70), rgb(60 20 120))'
 const HERO = shade('welcome')
 const HEADER = shade('hero')
@@ -17,8 +17,16 @@ export function Welcome() {
   return (
     <div className="relative mx-auto flex min-h-dvh max-w-md flex-col justify-between bg-cover bg-center px-6 pb-8 pt-safe text-white"
       style={{ backgroundImage: free ? solid : HERO, backgroundPosition: 'center 25%' }}>
-      <div className="mt-20 flex flex-col items-center gap-3 text-center">
-        <Logo size={56} tone="light" />
+      <div className="mt-12 flex flex-col items-center gap-3 text-center">
+        <div className="relative">
+          <span className="absolute -inset-4 rounded-full bg-gradient-to-tr from-fuchsia-500 via-violet-500 to-amber-300 opacity-70 blur-2xl" aria-hidden />
+          <img src="/img/mascot.png" alt="" width={148} height={148} draggable={false}
+            className="relative h-[148px] w-[148px] rounded-full object-cover ring-4 ring-white/90 shadow-2xl shadow-fuchsia-900/60" />
+        </div>
+        <h1 className="mt-2 text-[44px] font-black italic leading-none tracking-tight drop-shadow-lg" aria-label="EIG Vibes">
+          <span className="text-white">EIG </span><span className="bg-gradient-to-r from-violet-300 via-fuchsia-300 to-amber-200 bg-clip-text text-transparent">Vibes</span>
+        </h1>
+        <p className="text-sm font-semibold uppercase tracking-[.18em] text-white/85">Le réseau social des étudiants de l'EIG Bénin</p>
         <p className="text-base font-medium text-white/90">Ton école. Tes amis. Tes délires.</p>
       </div>
       <div className="space-y-3">

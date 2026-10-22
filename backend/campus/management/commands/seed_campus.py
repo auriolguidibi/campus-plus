@@ -35,7 +35,7 @@ class Command(BaseCommand):
         Challenge.objects.get_or_create(title='Photo du campus', defaults=dict(
             description='Partage ta plus belle photo du campus.', kind='media', max_points=30, rules='Photo originale uniquement.',
             starts_at=now - timedelta(days=1), deadline=now + timedelta(days=10), created_by=u))
-        Event.objects.get_or_create(title='Hackathon Campus+', defaults=dict(
+        Event.objects.get_or_create(title='Hackathon EIG Vibes', defaults=dict(
             description='24 h pour construire un projet utile aux étudiants.', category='hackathon',
             starts_at=now + timedelta(days=12), location='Amphi A', rules='Équipes de 3 à 5.', organizer=u))
         Event.objects.get_or_create(title='Soirée de rentrée', defaults=dict(
